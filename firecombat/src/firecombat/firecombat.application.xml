@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <H3>Combate a Incêndios com Agentes BDI</H3> Implementar um Sistema 
+	Multi-Agente que permita a simulação do combate a um incêndio sobre um terreno 
+	com determinadas caraterísticas. Devem ser implementados agentes bombeiros 
+	cujos comportamentos são guiados por crenças, desejos e intenções (BDI). -->
+<applicationtype xmlns="http://jadex.sourceforge.net/jadex"
+	xmlns:env="http://jadex.sourceforge.net/jadex-envspace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jadex.sourceforge.net/jadex 
+	                    http://jadex.sourceforge.net/jadex-application-2.2.xsd
+	                    http://jadex.sourceforge.net/jadex-envspace 
+	                    http://jadex.sourceforge.net/jadex-envspace-2.2.xsd"
+	name="firecombat" package="firecombat">
+
+	<imports>
+		<import>jadex.extension.envsupport.dataview.*</import>
+		<import>jadex.extension.envsupport.observer.perspective.*</import>
+		<import>jadex.extension.envsupport.math.*</import>
+		<import>jadex.extension.envsupport.environment.*</import>
+		<import>jadex.extension.envsupport.environment.space2d.*</import>
+		<import>jadex.extension.envsupport.environment.RoundBasedExecutor
+		</import>
+		<import>jadex.bdi.planlib.*</import>
+	</imports>
+
+	<!-- Tipos de espaços da aplicação. O espaço é partilhado por agentes da 
+		mesm aplicação -->
+	<extensiontypes>
+
+		<!-- Declaração da grelha do espaço -->
+		<env:envspacetype name="fc2dspace" width="100"
+			height="100" class="Grid2D">
+			<!-- Declaração dos objetos ativos na grelha -->
+			<env:objecttypes>
+				<env:objecttype name="fireman_chef">
+					<env:property name="position">0.0</env:property>
+				</env:objecttype>
+				<env:objecttype name="fireman_soldier">
+					<env:property name="position">0.0</env:property>
+				</env:objecttype>
+				<env:objecttype name="fire">
+					<env:property name="position" class="IVector2" event="true" />
+					<env:property name="wind"/> <!-- [0-200] km/h -->
+				</env:objecttype>
+				<env:objecttype name="forest">
+					<env:property name="density">1</env:property> <!-- [0 - 5] -->
+				</env:objecttype>
+			</env:objecttypes>
+
+
+			<!-- Processo em curso, p.e algo que vai acontecendo -->
+			<env:processtypes>
+				<env:processtype name="fireprogress" class="FireProgressProcess">
+				</env:processtype>
+			</env:processtypes>
+
+			<!-- A space executor defines the space execution policy (e.g. roundbased 
+				vs. continuous). -->
+			<env:spaceexecutor class="RoundBasedExecutor">
+				<env:property name="space">$space</env:property>
+			</env:spaceexecutor>
+
+
+			<env:dataviews>
+				<env:dataview name="view_all" class="GeneralDataView2D" />
+			</env:dataviews>
+
+			<!-- Declaration of the relationships between agents and their avatar 
+				objects in the space. -->
+			<env:avatarmappings>
+			</env:avatarmappings>
+
+			<env:actiontypes>
+				<!-- <env:actiontype name="atacarFlacos" class="AccaoAtacarFlancos"></env:actiontype> 
+					<env:actiontype name="atacarTop" class=""></env:actiontype> <env:actiontype 
+					name="atacarBottom" class=""></env:actiontype> <env:actiontype name="attackfire" 
+					class="ActionAttackFire"> <env:property name="fire_id" class="Object" /> 
+					</env:actiontype> <env:actiontype name="move" class="ActionMove"> <env:property 
+					name="move_id" class="Object" /> </env:actiontype> -->
+			</env:actiontypes>
+
+
+
+			<!-- Perspetiva User-Interface -->
+			<env:perspectives>
+				<env:perspective name="cenas" class="Perspective2D">
+
+					<env:drawable objecttype="fire" height="2.0" width="2.0">
+						<env:rectangle layer="1" color="#FFA500"/>
+					</env:drawable>
+					<env:prelayers>
+						<env:tiledlayer width="1.0" height="1.0"
+							imagepath="firecombat/images/fundo.jpg" />
+					</env:prelayers>
+					<env:postlayers>
+						<env:gridlayer width="1.0" height="1.0" color="black" />
+					</env:postlayers>
+				</env:perspective>
+
+			</env:perspectives>
+
+
+		</env:envspacetype>
+
+	</extensiontypes>
+
+
+	<!-- Componentes <componenttypes> <componenttype name="fire_chef" filename="" 
+		/> <componenttype name="fire_soldier" filename="" /> </componenttypes> -->
+
+	<configurations>
+		<configuration name="ConfigTest">
+			<extensions>
+				<env:envspace name="myfc2dspace" type="fc2dspace">
+
+					<env:processes>
+						<env:process type="fireprogress"></env:process>
+					</env:processes>
+
+					<env:observers>
+						<env:observer name="Fire Combat" dataview="view_all"
+							perspective="icons" />
+					</env:observers>
+
+				</env:envspace>
+			</extensions>
+			<!-- <components> <component type="FireManChef" /> <component type="Fire" 
+				/> </components> -->
+		</configuration>
+	</configurations>
+
+</applicationtype>
