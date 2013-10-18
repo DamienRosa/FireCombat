@@ -39,17 +39,23 @@
 				</env:objecttype>
 				<env:objecttype name="fire">
 					<env:property name="position" class="IVector2" event="true" />
-					<env:property name="wind"/> <!-- [0-200] km/h -->
 				</env:objecttype>
 				<env:objecttype name="forest">
-					<env:property name="density">1</env:property> <!-- [0 - 5] -->
+				    <env:property name="position">0.0</env:property>
 				</env:objecttype>
 			</env:objecttypes>
 
 
 			<!-- Processo em curso, p.e algo que vai acontecendo -->
 			<env:processtypes>
-				<env:processtype name="fireprogress" class="FireProgressProcess">
+				<env:processtype name="fireprogress" class="DefaultObjectCreationProcess">
+					<env:property name="tickrate">1</env:property>
+					<env:property name="type">"fire"</env:property>
+					<env:property name="properties" dynamic="true">
+						jadex.commons.SUtil.createHashMap(
+						new String[]{Space2D.PROPERTY_POSITION},
+						new Object[]{FireProgress.getNextPositions($space)})
+					</env:property>
 				</env:processtype>
 			</env:processtypes>
 
@@ -58,7 +64,6 @@
 			<env:spaceexecutor class="RoundBasedExecutor">
 				<env:property name="space">$space</env:property>
 			</env:spaceexecutor>
-
 
 			<env:dataviews>
 				<env:dataview name="view_all" class="GeneralDataView2D" />
@@ -82,10 +87,10 @@
 
 			<!-- Perspetiva User-Interface -->
 			<env:perspectives>
-				<env:perspective name="cenas" class="Perspective2D">
+				<env:perspective name="icons" class="Perspective2D">
 
 					<env:drawable objecttype="fire" height="2.0" width="2.0">
-						<env:rectangle layer="1" color="#FFA500"/>
+						<env:rectangle layer="1" color="#FFA500" />
 					</env:drawable>
 					<env:prelayers>
 						<env:tiledlayer width="1.0" height="1.0"
@@ -113,7 +118,11 @@
 				<env:envspace name="myfc2dspace" type="fc2dspace">
 
 					<env:processes>
-						<env:process type="fireprogress"></env:process>
+						<env:process type="fireprogress">
+							<env:property name="tickrate">1</env:property>
+							<env:property name="type">"fire"</env:property>
+							<env:property name="wind">200</env:property> <!-- [0-200] km/h -->
+						</env:process>
 					</env:processes>
 
 					<env:observers>
