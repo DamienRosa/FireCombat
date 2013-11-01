@@ -27,14 +27,13 @@
 	<extensiontypes>
 
 		<!-- Declaração da grelha do espaço -->
-		<env:envspacetype name="fc2dspace" width="100"
-			height="100" class="Grid2D">
+		<env:envspacetype name="fc2dspace" width="100" height="100" class="Grid2D">
 			<!-- Declaração dos objetos ativos na grelha -->
 			<env:objecttypes>
-				<env:objecttype name="fireman_chef">
+				<env:objecttype name="commander">
 					<env:property name="position">0.0</env:property>
 				</env:objecttype>
-				<env:objecttype name="fireman_soldier">
+				<env:objecttype name="soldier">
 					<env:property name="position">0.0</env:property>
 				</env:objecttype>
 				<env:objecttype name="fire">
@@ -59,8 +58,7 @@
 				</env:processtype>
 			</env:processtypes>
 
-			<!-- A space executor defines the space execution policy (e.g. roundbased 
-				vs. continuous). -->
+			<!-- A space executor defines the space execution policy (e.g. roundbased vs. continuous). -->
 			<env:spaceexecutor class="RoundBasedExecutor">
 				<env:property name="space">$space</env:property>
 			</env:spaceexecutor>
@@ -72,6 +70,8 @@
 			<!-- Declaration of the relationships between agents and their avatar 
 				objects in the space. -->
 			<env:avatarmappings>
+				<env:avatarmapping componenttype="Commander" objecttype="commander"/>
+				<env:avatarmapping componenttype="Soldier" objecttype="soldier"/>
 			</env:avatarmappings>
 
 			<env:actiontypes>
