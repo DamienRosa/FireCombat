@@ -1,9 +1,9 @@
-Ambiente:
+﻿Ambiente:
  - Wind
  - Forest Density
  - Tamanho: 100x100 
 
- - Temperature
+ - Temperature 
  - Water Fluxe
  - Distância do jacto ?????
 
