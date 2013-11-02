@@ -68,7 +68,7 @@
 
 	<goals>
 		<!-- Goal for putting out the fire -->
-		<achievegoal name="extinguish">
+		<achievegoal name="extinguish_fire">
 			<parameter name="fire" class="ISpaceObject">
 				<value>$fire</value>
 			</parameter>
@@ -90,7 +90,7 @@
 		<plan name="extinguish_plan">
 			<body class="ExtinguishPlanEnv"/>
 			<trigger>
-				<goal ref="extinguish"/>
+				<goal ref="extinguish_fire"/>
 			</trigger>
 		</plan>
 	</plans>
