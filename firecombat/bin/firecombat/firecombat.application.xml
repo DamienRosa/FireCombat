@@ -9,7 +9,7 @@
 	                    http://jadex.sourceforge.net/jadex-application-2.2.xsd
 	                    http://jadex.sourceforge.net/jadex-envspace 
 	                    http://jadex.sourceforge.net/jadex-envspace-2.2.xsd"
-	name="firecombat" package="firecombat">
+	name="Firecombat" package="firecombat">
 
 	<imports>
 		<import>jadex.extension.envsupport.dataview.*</import>
@@ -37,10 +37,11 @@
 					<env:property name="position">0.0</env:property>
 				</env:objecttype>
 				<env:objecttype name="fire">
-					<env:property name="position" class="IVector2" event="true" />
+					<env:property name="fire_position" class="IVector2" event="true" />
+					<env:property name="fire_intensity">1</env:property>
 				</env:objecttype>
 				<env:objecttype name="forest">
-				    <env:property name="position">0.0</env:property>
+<!-- 				    <env:property name="position">0.0</env:property> -->
 				</env:objecttype>
 			</env:objecttypes>
 
