@@ -9,7 +9,7 @@
 	                    http://jadex.sourceforge.net/jadex-application-2.2.xsd
 	                    http://jadex.sourceforge.net/jadex-envspace 
 	                    http://jadex.sourceforge.net/jadex-envspace-2.2.xsd"
-	name="Firecombat" package="firecombat">
+	name="FireCombat" package="firecombat">
 
 	<imports>
 		<import>jadex.extension.envsupport.dataview.*</import>
@@ -17,124 +17,125 @@
 		<import>jadex.extension.envsupport.math.*</import>
 		<import>jadex.extension.envsupport.environment.*</import>
 		<import>jadex.extension.envsupport.environment.space2d.*</import>
-		<import>jadex.extension.envsupport.environment.RoundBasedExecutor
-		</import>
+		<import>jadex.extension.envsupport.environment.RoundBasedExecutor</import>
 		<import>jadex.bdi.planlib.*</import>
 	</imports>
 
 	<!-- Tipos de espaços da aplicação. O espaço é partilhado por agentes da 
 		mesm aplicação -->
 	<extensiontypes>
-
 		<!-- Declaração da grelha do espaço -->
 		<env:envspacetype name="fc2dspace" width="100" height="100" class="Grid2D">
 			<!-- Declaração dos objetos ativos na grelha -->
 			<env:objecttypes>
 				<env:objecttype name="commander">
-					<env:property name="position">0.0</env:property>
+					<env:property name="vision_range">0</env:property> <!-- change value -->
+					<env:property name="position" event="true"/>
 				</env:objecttype>
 				<env:objecttype name="soldier">
-					<env:property name="position">0.0</env:property>
+					<env:property name="vision_range">0</env:property> <!-- change value -->
+					<env:property name="position" event="true"/>
 				</env:objecttype>
 				<env:objecttype name="fire">
-					<env:property name="fire_position" class="IVector2" event="true" />
-					<env:property name="fire_intensity">1</env:property>
-				</env:objecttype>
-				<env:objecttype name="forest">
-<!-- 				    <env:property name="position">0.0</env:property> -->
+					<env:property name="position" event="true"/>
 				</env:objecttype>
 			</env:objecttypes>
 
-
-			<!-- Processo em curso, p.e algo que vai acontecendo -->
+			<!-- Processes run on their own in the environment. -->
 			<env:processtypes>
-				<env:processtype name="fireprogress" class="DefaultObjectCreationProcess">
+				<env:processtype name="fire_spread" class="DefaultObjectCreationProcess">
 					<env:property name="tickrate">1</env:property>
 					<env:property name="type">"fire"</env:property>
 					<env:property name="properties" dynamic="true">
 						jadex.commons.SUtil.createHashMap(
-						new String[]{Space2D.PROPERTY_POSITION},
-						new Object[]{FireProgress.getNextPositions($space)})
+							new String[]{Space2D.PROPERTY_POSITION},
+							new Object[]{FireProgress.getNextPositions($space)})
+<!-- 							new Object[]{((Space2D)$space).getRandomPosition(Vector2Int.ZERO)}) -->
 					</env:property>
 				</env:processtype>
 			</env:processtypes>
-
-			<!-- A space executor defines the space execution policy (e.g. roundbased vs. continuous). -->
-			<env:spaceexecutor class="RoundBasedExecutor">
-				<env:property name="space">$space</env:property>
-			</env:spaceexecutor>
 
 			<env:dataviews>
 				<env:dataview name="view_all" class="GeneralDataView2D" />
 			</env:dataviews>
 
-			<!-- Declaration of the relationships between agents and their avatar 
-				objects in the space. -->
+			<!-- Declaration of the relationships between agents and their avatar objects in the space. -->
 			<env:avatarmappings>
 				<env:avatarmapping componenttype="Commander" objecttype="commander"/>
 				<env:avatarmapping componenttype="Soldier" objecttype="soldier"/>
 			</env:avatarmappings>
 
+			<!-- Actions that can be performed in the environment. -->
 			<env:actiontypes>
-				<!-- <env:actiontype name="atacarFlacos" class="AccaoAtacarFlancos"></env:actiontype> 
-					<env:actiontype name="atacarTop" class=""></env:actiontype> <env:actiontype 
-					name="atacarBottom" class=""></env:actiontype> <env:actiontype name="attackfire" 
-					class="ActionAttackFire"> <env:property name="fire_id" class="Object" /> 
-					</env:actiontype> <env:actiontype name="move" class="ActionMove"> <env:property 
-					name="move_id" class="Object" /> </env:actiontype> -->
+				<env:actiontype name="frontal_combat" class="FrontalCombatAction">
+					<env:property name="actor_id" class="Object"/>
+				</env:actiontype> 
+				<env:actiontype name="flank_combat" class="FlankCombatAction">
+					<env:property name="actor_id" class="Object"/>
+				</env:actiontype> 
+				<env:actiontype name="perimeter_combat" class="PerimeterCombatAction">
+					<env:property name="actor_id" class="Object"/>
+				</env:actiontype> 
+				<env:actiontype name="extinguish" class="ExtinguishAction"> 
+					<env:property name="fire_id" class="Object" /> 
+				</env:actiontype> 
 			</env:actiontypes>
-
-
-
-			<!-- Perspetiva User-Interface -->
+			
+			<!-- Perspectives define the user-interface appearance. -->
 			<env:perspectives>
 				<env:perspective name="icons" class="Perspective2D">
-
+					<env:drawable objecttype="commander" height="1.0" width="1.0">
+						<env:texturedrectangle layer="1" imagepath="" />
+					</env:drawable>
+					<env:drawable objecttype="soldier" height="1.0" width="1.0">
+						<env:texturedrectangle layer="1" imagepath="" />
+					</env:drawable>
 					<env:drawable objecttype="fire" height="2.0" width="2.0">
 						<env:rectangle layer="1" color="#FFA500" />
 					</env:drawable>
 					<env:prelayers>
-						<env:tiledlayer width="1.0" height="1.0"
-							imagepath="firecombat/images/fundo.jpg" />
+						<env:tiledlayer width="1.0" height="1.0" imagepath="firecombat/images/fundo.jpg" />
 					</env:prelayers>
 					<env:postlayers>
 						<env:gridlayer width="1.0" height="1.0" color="black" />
 					</env:postlayers>
 				</env:perspective>
-
 			</env:perspectives>
-
-
+			
+			<!-- A space executor defines the space execution policy (e.g. roundbased vs. continuous). -->
+			<env:spaceexecutor class="RoundBasedExecutor">
+				<env:property name="space">$space</env:property>
+			</env:spaceexecutor>
 		</env:envspacetype>
-
 	</extensiontypes>
 
-
-	<!-- Componentes <componenttypes> <componenttype name="fire_chef" filename="" 
-		/> <componenttype name="fire_soldier" filename="" /> </componenttypes> -->
+	<!-- Agent types of the application. -->
+	<componenttypes>
+		<componenttype name="Commander" filename="firecombat/Commander.agent.xml"/>
+		<componenttype name="Soldier" filename="firecombat/Soldier.agent.xml"/>
+	</componenttypes>
 
 	<configurations>
 		<configuration name="ConfigTest">
 			<extensions>
 				<env:envspace name="myfc2dspace" type="fc2dspace">
-
 					<env:processes>
-						<env:process type="fireprogress">
+						<env:process type="fire_spread">
 							<env:property name="tickrate">1</env:property>
 							<env:property name="type">"fire"</env:property>
 							<env:property name="wind">200</env:property> <!-- [0-200] km/h -->
 						</env:process>
 					</env:processes>
-
 					<env:observers>
-						<env:observer name="Fire Combat" dataview="view_all"
-							perspective="icons" />
+						<env:observer name="Fire Fighting Simulation" dataview="view_all" perspective="icons" />
 					</env:observers>
-
 				</env:envspace>
 			</extensions>
-			<!-- <components> <component type="FireManChef" /> <component type="Fire" 
-				/> </components> -->
+			
+<!-- 			<components> -->
+<!-- 				<component type="Commander"/> -->
+<!-- 				<component type="Soldier"/> -->
+<!-- 			</components>			 -->
 		</configuration>
 	</configurations>
 
