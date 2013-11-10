@@ -9,7 +9,7 @@
 	                    http://jadex.sourceforge.net/jadex-application-2.2.xsd
 	                    http://jadex.sourceforge.net/jadex-envspace 
 	                    http://jadex.sourceforge.net/jadex-envspace-2.2.xsd"
-	name="FireCombat" package="firecombat">
+	name="firecombat" package="firecombat">
 
 	<imports>
 		<import>jadex.extension.envsupport.dataview.*</import>
@@ -39,20 +39,14 @@
 				<env:objecttype name="fire">
 					<env:property name="position" event="true"/>
 				</env:objecttype>
+				<env:objecttype name="forest">
+				    <env:property name="posittion" event="true"></env:property>
+				</env:objecttype>
 			</env:objecttypes>
 
 			<!-- Processes run on their own in the environment. -->
 			<env:processtypes>
-				<env:processtype name="fire_spread" class="DefaultObjectCreationProcess">
-					<env:property name="tickrate">1</env:property>
-					<env:property name="type">"fire"</env:property>
-					<env:property name="properties" dynamic="true">
-						jadex.commons.SUtil.createHashMap(
-							new String[]{Space2D.PROPERTY_POSITION},
-							new Object[]{FireProgress.getNextPositions($space)})
-<!-- 							new Object[]{((Space2D)$space).getRandomPosition(Vector2Int.ZERO)}) -->
-					</env:property>
-				</env:processtype>
+				<env:processtype name="fire_spread" class="BurnFireProcess"/>   
 			</env:processtypes>
 
 			<env:dataviews>
@@ -91,14 +85,17 @@
 						<env:texturedrectangle layer="1" imagepath="" />
 					</env:drawable>
 					<env:drawable objecttype="fire" height="2.0" width="2.0">
-						<env:rectangle layer="1" color="#FFA500" />
+						<env:rectangle layer="2" color="#FFA500" />
+					</env:drawable>
+					 <env:drawable objecttype="forest" height="100.0" width="100.0">
+						<env:rectangle layer="1" x="0" y="0" color="#7CFC00" height="100.0" width="100.0"/>
 					</env:drawable>
 					<env:prelayers>
 						<env:tiledlayer width="1.0" height="1.0" imagepath="firecombat/images/fundo.jpg" />
 					</env:prelayers>
-					<env:postlayers>
+					<!-- <env:postlayers>
 						<env:gridlayer width="1.0" height="1.0" color="black" />
-					</env:postlayers>
+					</env:postlayers> -->
 				</env:perspective>
 			</env:perspectives>
 			
@@ -121,9 +118,9 @@
 				<env:envspace name="myfc2dspace" type="fc2dspace">
 					<env:processes>
 						<env:process type="fire_spread">
-							<env:property name="tickrate">1</env:property>
+							<!-- <env:property name="tickrate">1</env:property>
 							<env:property name="type">"fire"</env:property>
-							<env:property name="wind">200</env:property> <!-- [0-200] km/h -->
+							<env:property name="wind">200</env:property> [0-200] km/h -->
 						</env:process>
 					</env:processes>
 					<env:observers>

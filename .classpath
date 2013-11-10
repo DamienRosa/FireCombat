@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="firecombat/src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/DamienRosa/Documents/GitHub/FireCombat/firecombat/src/lib/jadex-platform-standalone-launch-2.2.jar"/>
+	<classpathentry kind="output" path="firecombat/bin"/>
+</classpath>
