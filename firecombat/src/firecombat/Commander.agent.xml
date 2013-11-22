@@ -26,21 +26,21 @@
 	<beliefs>
 		<!-- Environment. -->
 		<belief name="env" class="Grid2D">
-			<fact class="IFuture">$scope.getParentAccess().getExtension("mygc2dspace")</fact>
+			<fact class="IFuture">$scope.getParentAccess().getExtension("myfc2dspace")</fact>
 		</belief>
 			
 		<!-- Myself. -->
-		<belief name="myself" class="ISpaceObject">
-			<fact>$beliefbase.env.getAvatar($scope.getComponentDescription(), $scope.getAgentModel().getFullName())</fact>
-		</belief>
+<!-- 		<belief name="myself" class="ISpaceObject"> -->
+<!-- 			<fact>$beliefbase.env.getAvatar($scope.getComponentDescription(), $scope.getAgentModel().getFullName())</fact> -->
+<!-- 		</belief> -->
 	
 		<!-- The actual position on the grid world. -->
-		<belief name="position" class="IVector2" evaluationmode="push">
-			<fact language="jcl">
-				$beliefbase.myself.position
-				//$beliefbase.myself.getProperty("position")
-			</fact>
-		</belief>
+<!-- 		<belief name="position" class="IVector2" evaluationmode="push"> -->
+<!-- 			<fact language="jcl"> -->
+<!-- 				$beliefbase.myself.position -->
+<!-- 				//$beliefbase.myself.getProperty("position") -->
+<!-- 			</fact> -->
+<!-- 		</belief> -->
 		
 		<!-- Wind velocity -->
 		<belief name="wind_speed" class="IVector2" evaluationmode="push">
@@ -59,42 +59,52 @@
 		</belief>
 		
 		<!-- The soldier at his current position. -->
-		<beliefset name="soldiers_position" class="ISpaceObject"/>
+<!-- 		<beliefset name="soldiers_position" class="ISpaceObject"/> -->
 		
 		<!-- The fire at its current position. -->
-		<beliefset name="fire_position" class="ISpaceObject"/>
+		<beliefset name="fire" class="ISpaceObject"/>
 		
 		<beliefset name="vegetation_state" class="ISpaceObject"/>
+		
+		<beliefset name="busy_soldiers" class="ISpaceObject"></beliefset>
 	</beliefs>
 
 	<goals>
 		<achievegoal name="extinguish_fire">
-			<parameter name="fire" class="IVector2"/>
+			<parameter name="fire" class="IVector2">
+				<value>$fire</value>
+			</parameter>		
+			<unique/>	
+			<creationcondition language="jcl">
+				ISpaceObject $fire &amp;&amp; Arrays.asList($beliefbase.fire_position).contains($fire)
+			</creationcondition>
 		</achievegoal>
 		
-		<performgoal name="soldiers_positioning">
-		</performgoal>
+		<achievegoal name="send_soldiers">
+			<parameter name="fire" class="ISpaceObject"/>
+			<parameter name="soldiers" class="IService"/>
+		</achievegoal>
 	</goals>
 
 	<plans>
 		<plan name="frontal_combat_plan">
 			<body class="FrontalCombatPlanEnv"/>
 			<trigger>
-				<goal ref=""/>
+				<goal ref="extinguish_fire"/>
 			</trigger>
 		</plan>
 
 		<plan name="flank_combat_plan">
 			<body class="FlankCombatPlanEnv"/>
 			<trigger>
-				<goal ref=""/>
+				<goal ref="extinguish_fire"/>
 			</trigger>
 		</plan>
 
 		<plan name="perimeter_combat_plan">
 			<body class="PerimeterCombatPlanEnv"/>
 			<trigger>
-				<goal ref=""/>
+				<goal ref="extinguish_fire"/>
 			</trigger>
 		</plan>
 	</plans>

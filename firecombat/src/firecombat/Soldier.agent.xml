@@ -22,12 +22,12 @@
 		<import>jadex.bridge.IContextService</import>
 		<import>java.util.Arrays</import>
 	</imports>
-
+	
 	<beliefs>
 		<!-- Environment. -->
 		<belief name="env" class="Grid2D">
 			<fact class="IFuture">
-				$scope.getParentAccess().getExtension("mygc2dspace")
+				$scope.getParentAccess().getExtension("myfc2dspace")
 			</fact>
 		</belief>
 			
