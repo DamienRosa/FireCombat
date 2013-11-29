@@ -1,27 +1,26 @@
 package soldier;
 
-import world.Soldier;
+import jadex.bdiv3.annotation.Plan;
 import jadex.bdiv3.annotation.PlanAPI;
 import jadex.bdiv3.annotation.PlanBody;
 import jadex.bdiv3.annotation.PlanCapability;
 import jadex.bdiv3.annotation.PlanReason;
 import jadex.bdiv3.runtime.IPlan;
-import jadex.commons.future.IFuture;
 
-public class LocalFireCombatActionPlan {
-	
+@Plan
+public class MoveToLocationPlan {
+
 	@PlanCapability
-	protected Soldier soldier;
+	protected SoldierBDI agent;
 	
 	@PlanAPI
-	protected IPlan rplan;
+	protected IPlan plan;
 	
 	@PlanReason
-	protected FireCombatAction goal;
+	protected AchieveMoveToLocation goal;
 	
 	@PlanBody
-	public IFuture<Void> body(){
+	public void body(){
 		
-		return null;
 	}
 }
