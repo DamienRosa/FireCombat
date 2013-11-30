@@ -33,7 +33,7 @@ public class ForestBgProcess  extends SimplePropertyObject implements ISpaceProc
 		for (int x = 0; x < space.getAreaSize().getXAsInteger(); x++) {
 			for (int y = 0; y < space.getAreaSize().getYAsInteger(); y++) {
 				forest.put("position", new Vector2Double(x,y));
-				forest.put("probability", 0);
+				forest.put("probability", 0.0);
 				Integer r = rand.nextInt(3);
 				forest.put("density", r.toString());
 				space.createSpaceObject("forest", forest, null);

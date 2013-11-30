@@ -38,17 +38,20 @@
 				</env:objecttype>
 				<env:objecttype name="fire">
 					<env:property name="position" event="true"/>
+					<env:property name="intensity" class="String" dynamic="true"/>
 				</env:objecttype>
 				<env:objecttype name="forest">
-				    <env:property name="posittion" event="true"/>
-				    <env:property name="probability">0</env:property>
+				    <env:property name="position" class="IVector2" event="true"/>
+				    <env:property name="probability" class="double" />
 				    <env:property name="density" class="String" dynamic="true"/> <!-- [0, 1, 2] -->
+				    <env:property name="wind_direction" class="String"/>
+				    <env:property name="wind_velocity" />
 				</env:objecttype>
 			</env:objecttypes>
 
 			<!-- Processes run on their own in the environment. -->
 			<env:processtypes>
-				<env:processtype name="fire_spread" class="BurnFireProcess"/>
+				<env:processtype name="fire_spread" class="BurnFireProcess1"/>
 				<env:processtype name="forest_bg" class="ForestBgProcess"/>   
 			</env:processtypes>
 
@@ -64,7 +67,7 @@
 
 			<!-- Actions that can be performed in the environment. -->
 			<env:actiontypes>
-				<env:actiontype name="frontal_combat" class="FrontalCombatAction">
+				<!--  <env:actiontype name="frontal_combat" class="FrontalCombatAction">
 					<env:property name="actor_id" class="Object"/>
 				</env:actiontype> 
 				<env:actiontype name="flank_combat" class="FlankCombatAction">
@@ -75,7 +78,7 @@
 				</env:actiontype> 
 				<env:actiontype name="extinguish" class="ExtinguishAction"> 
 					<env:property name="fire_id" class="Object" /> 
-				</env:actiontype> 
+				</env:actiontype> -->
 			</env:actiontypes>
 			
 			<!-- Perspectives define the user-interface appearance. -->
@@ -87,18 +90,28 @@
 					<env:drawable objecttype="soldier" height="1.0" width="1.0">
 						<env:texturedrectangle layer="2" imagepath="" />
 					</env:drawable>
+					
 					<env:drawable objecttype="fire" height="1.0" width="1.0">
-						<env:rectangle layer="2" color="#FFA500" />
+					    <env:rectangle layer="2" color="#FFA500">
+						     <env:drawcondition>$object.intensity.equals("1")</env:drawcondition>
+						</env:rectangle>
+						<env:rectangle layer="2" color="#FF0000">
+						     <env:drawcondition>$object.intensity.equals("2")</env:drawcondition>
+						</env:rectangle>
+						<env:rectangle layer="2" color="black">
+						     <env:drawcondition>$object.intensity.equals("3")</env:drawcondition>
+						</env:rectangle>
 					</env:drawable>
+					
 					 <env:drawable objecttype="forest" height="1.0" width="1.0">
 						<env:rectangle layer="1" color="#8B4513">
-						    <env:drawcondition>$object.density.contains("0")</env:drawcondition>
+						    <env:drawcondition>$object.density.equals("0")</env:drawcondition>
 						</env:rectangle>
 						<env:rectangle layer="1" color="#008000">
-						    <env:drawcondition>$object.density.contains("1")</env:drawcondition>
+						    <env:drawcondition>$object.density.equals("1")</env:drawcondition>
 						</env:rectangle>
 						<env:rectangle layer="1" color="#006400">
-						    <env:drawcondition>$object.density.contains("2")</env:drawcondition>
+						    <env:drawcondition>$object.density.equals("2")</env:drawcondition>
 						</env:rectangle>
 						
 					</env:drawable>
