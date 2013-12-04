@@ -10,6 +10,7 @@ import jadex.extension.envsupport.environment.IEnvironmentSpace;
 import jadex.extension.envsupport.environment.ISpaceProcess;
 import jadex.extension.envsupport.environment.space2d.Space2D;
 import jadex.extension.envsupport.math.Vector2Double;
+import jadex.extension.envsupport.math.Vector2Int;
 
 public class ForestBgProcess  extends SimplePropertyObject implements ISpaceProcess{
 
@@ -32,10 +33,11 @@ public class ForestBgProcess  extends SimplePropertyObject implements ISpaceProc
 		Random rand = new Random();
 		for (int x = 0; x < space.getAreaSize().getXAsInteger(); x++) {
 			for (int y = 0; y < space.getAreaSize().getYAsInteger(); y++) {
-				forest.put("position", new Vector2Double(x,y));
+				forest.put("position", new Vector2Int(x,y));
 				forest.put("probability", 0.0);
-				Integer r = rand.nextInt(3);
+				Integer r = rand.nextInt(2);
 				forest.put("density", r.toString());
+				forest.put("burning", false);
 				space.createSpaceObject("forest", forest, null);
 			}
 			
