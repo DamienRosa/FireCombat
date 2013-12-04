@@ -21,69 +21,39 @@ public class BurnFireProcess extends SimplePropertyObject implements
 
 	protected double lasttick;
 
-//	public ISpaceObject getObjectByPos(int x, int y, Grid2D grid) {
-//		Object[] objects = grid.getSpaceObjects();
-//		for (Object object : objects) {
-//			if (((ISpaceObject) object).getProperty("position").equals(
-//					new Vector2Int(x, y))) {
-//				return ((ISpaceObject) object);
-//			}
-//		}
-//		return null;
-//	}
-//
-//	public ArrayList<ISpaceObject> getNeighbors(IVector2 pos, Grid2D grid) {
-//		int x = pos.getXAsInteger();
-//		int y = pos.getYAsInteger();
-//
-//		int w = grid.getAreaSize().getXAsInteger();
-//		int h = grid.getAreaSize().getYAsInteger();
-//
-//		ArrayList<ISpaceObject> temp = new ArrayList<>();
-//		temp.add(y > 0 ? getObjectByPos(x, y - 1, grid) : null);
-//		temp.add(x < w && y > 0 ? getObjectByPos(x + 1, y - 1, grid) : null);
-//		temp.add(x < w ? getObjectByPos(x + 1, y, grid) : null);
-//		temp.add(x < w && y < h ? getObjectByPos(x + 1, y + 1, grid) : null);
-//		temp.add(y < h ? getObjectByPos(x, y + 1, grid) : null);
-//		temp.add(x > 0 && y < h ? getObjectByPos(x - 1, y + 1, grid) : null);
-//		temp.add(x > 0 ? getObjectByPos(x - 1, y, grid) : null);
-//		temp.add(x > 0 && y > 0 ? getObjectByPos(x - 1, y - 1, grid) : null);
-//		return temp;
-//	}
-
 	@Override
 	public void execute(IClockService arg0, IEnvironmentSpace arg1) {
 		Grid2D space = (Grid2D) arg1;
-
+		Random rng = new Random();
 		ISpaceObject[] fire = space.getSpaceObjectsByType("fire");
 
-		if (lasttick + 2  < arg0.getTick()) {
+		if (lasttick + 2 < arg0.getTick()) {
 			lasttick += 3;
 
 			for (ISpaceObject flame : fire) {
 
-				Set neighbors = space.getNearObjects((IVector2) flame.getProperty("position"),	new Vector1Int(2), "forest");
-
+				Set neighbors = space.getNearObjects((IVector2) flame.getProperty("position"),new Vector1Int(2), "forest");
 				for (Iterator iterator = neighbors.iterator(); iterator.hasNext();) {
 					ISpaceObject neighbor = (ISpaceObject) iterator.next();
 					if (!((boolean) neighbor.getProperty("burning"))) {
-						neighbor.setProperty("probability", 0.6);
+						double prob = rng.nextDouble();
+						if (prob >= 0.6 && prob < 0.7) {
+							neighbor.setProperty("probability", 0.6);
+						}
 					}
 				}
+				
 				if (((int) flame.getProperty("intensity")) != 3) {
-					flame.setProperty("intensity",
-							((int) flame.getProperty("intensity")) + 1);
+					flame.setProperty("intensity", ((int) flame.getProperty("intensity")) + 1);
 				}
-				ISpaceObject tree_pos = (ISpaceObject) space
-						.getSpaceObjectsByGridPosition(
-								(IVector2) flame.getProperty("position"),
-								"forest").iterator().next();
+				ISpaceObject tree_pos = (ISpaceObject) space.getSpaceObjectsByGridPosition((IVector2) flame.getProperty("position"),"forest").iterator().next();
 				tree_pos.setProperty("probability", 1.0);
 			}
 
 			ISpaceObject[] forest = space.getSpaceObjectsByType("forest");
 			for (ISpaceObject tree : forest) {
 				if (tree.getProperty("probability").equals(0.6)) {
+					
 					Map flame = new HashMap<>();
 					flame.put("position", tree.getProperty("position"));
 					flame.put("intensity", 1);
@@ -91,6 +61,7 @@ public class BurnFireProcess extends SimplePropertyObject implements
 
 					tree.setProperty("burning", true);
 				}
+
 			}
 		}
 	}
