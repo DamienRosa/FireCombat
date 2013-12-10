@@ -1,5 +1,6 @@
 package firecombat;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -13,6 +14,7 @@ import jadex.extension.envsupport.environment.ISpaceProcess;
 import jadex.extension.envsupport.environment.space2d.Grid2D;
 import jadex.extension.envsupport.math.IVector2;
 import jadex.extension.envsupport.math.Vector1Int;
+import jadex.extension.envsupport.math.Vector2Double;
 import jadex.extension.envsupport.math.Vector2Int;
 import java.util.Iterator;
 
@@ -21,24 +23,48 @@ public class BurnFireProcess extends SimplePropertyObject implements
 
 	protected double lasttick;
 
+	
+	 public ArrayList<ISpaceObject> getNeighbors(IVector2 pos, Grid2D grid) {
+		 int x = pos.getXAsInteger();
+		 int y = pos.getYAsInteger();
+		
+		 int w = grid.getAreaSize().getXAsInteger();
+		 int h = grid.getAreaSize().getYAsInteger();
+		 ArrayList<ISpaceObject> temp = new ArrayList<ISpaceObject>();
+		 temp.add( y > 0 ?  (ISpaceObject) grid.getSpaceObjectsByGridPosition(new Vector2Double(x,y-1), "forest").iterator().next() : null);
+		 temp.add( x < w && y > 0 ? (ISpaceObject)grid.getSpaceObjectsByGridPosition(new Vector2Double(x+1,y-1), "forest").iterator().next() : null);
+		 temp.add( x < w ? (ISpaceObject)grid.getSpaceObjectsByGridPosition(new Vector2Double(x+1,y), "forest").iterator().next() : null);
+		 temp.add( x < w && y < h ? (ISpaceObject)grid.getSpaceObjectsByGridPosition(new Vector2Double(x+1,y+1), "forest").iterator().next(): null);
+		 temp.add( y < h ? (ISpaceObject)grid.getSpaceObjectsByGridPosition(new Vector2Double(x,y+1), "forest").iterator().next() : null);
+		 temp.add( x > 0 && y < h ? (ISpaceObject) grid.getSpaceObjectsByGridPosition(new Vector2Double(x-1,y+1), "forest").iterator().next() : null);
+		 temp.add( x > 0 ? (ISpaceObject) grid.getSpaceObjectsByGridPosition(new Vector2Double(x-1,y), "forest").iterator().next() : null);
+		 temp.add( x > 0 && y > 0 ?(ISpaceObject)  grid.getSpaceObjectsByGridPosition(new Vector2Double(x-1,y-1), "forest").iterator().next() : null);
+		 return temp;
+	 }
+	
 	@Override
 	public void execute(IClockService arg0, IEnvironmentSpace arg1) {
 		Grid2D space = (Grid2D) arg1;
 		Random rng = new Random();
 		ISpaceObject[] fire = space.getSpaceObjectsByType("fire");
+		
+		int sizex = space.getAreaSize().getXAsInteger();
+		int sizey = space.getAreaSize().getYAsInteger();
 
 		if (lasttick + 2 < arg0.getTick()) {
-			lasttick += 3;
+			lasttick += 5;
 
 			for (ISpaceObject flame : fire) {
 
-				Set neighbors = space.getNearObjects((IVector2) flame.getProperty("position"),new Vector1Int(2), "forest");
-				for (Iterator iterator = neighbors.iterator(); iterator.hasNext();) {
-					ISpaceObject neighbor = (ISpaceObject) iterator.next();
-					if (!((boolean) neighbor.getProperty("burning"))) {
-						double prob = rng.nextDouble();
-						if (prob >= 0.6 && prob < 0.7) {
-							neighbor.setProperty("probability", 0.6);
+				ArrayList<ISpaceObject> neighbors = getNeighbors((IVector2) flame.getProperty("position"), space);
+				for (int i = 0; i < neighbors.size(); i++) {
+					Vector2Double pos = (Vector2Double) neighbors.get(i).getProperty("position");
+					if(pos.getXAsInteger() > 0 && pos.getXAsInteger() < sizex && (pos.getYAsInteger() > 0 && pos.getYAsInteger() < sizex)){
+						if (!((boolean) neighbors.get(i).getProperty("burning"))) {
+							double prob = rng.nextDouble();
+							if (prob >= 0.6 && prob < 0.7) {
+								neighbors.get(i).setProperty("probability", 0.6);
+							}
 						}
 					}
 				}
@@ -51,7 +77,9 @@ public class BurnFireProcess extends SimplePropertyObject implements
 			}
 
 			ISpaceObject[] forest = space.getSpaceObjectsByType("forest");
+			
 			for (ISpaceObject tree : forest) {
+				Vector2Double pos = (Vector2Double) tree.getProperty("position");
 				if (tree.getProperty("probability").equals(0.6)) {
 					
 					Map flame = new HashMap<>();
@@ -61,7 +89,6 @@ public class BurnFireProcess extends SimplePropertyObject implements
 
 					tree.setProperty("burning", true);
 				}
-
 			}
 		}
 	}
