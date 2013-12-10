@@ -46,7 +46,6 @@
 				    <env:property name="density" class="String" dynamic="true"/> <!-- [0, 1, 2] -->
 				    <env:property name="burning" class="boolean"/>
 				    <env:property name="wind_direction" class="String"/>
-				    <env:property name="wind_velocity" />
 				</env:objecttype>
 			</env:objecttypes>
 
