@@ -64,22 +64,6 @@
 				<env:avatarmapping componenttype="Commander" objecttype="commander"/>
 				<env:avatarmapping componenttype="Soldier" objecttype="soldier"/>
 			</env:avatarmappings>
-
-			<!-- Actions that can be performed in the environment. -->
-			<env:actiontypes>
-				<!--  <env:actiontype name="frontal_combat" class="FrontalCombatAction">
-					<env:property name="actor_id" class="Object"/>
-				</env:actiontype> 
-				<env:actiontype name="flank_combat" class="FlankCombatAction">
-					<env:property name="actor_id" class="Object"/>
-				</env:actiontype> 
-				<env:actiontype name="perimeter_combat" class="PerimeterCombatAction">
-					<env:property name="actor_id" class="Object"/>
-				</env:actiontype> 
-				<env:actiontype name="extinguish" class="ExtinguishAction"> 
-					<env:property name="fire_id" class="Object" /> 
-				</env:actiontype> -->
-			</env:actiontypes>
 			
 			<!-- Perspectives define the user-interface appearance. -->
 			<env:perspectives>
@@ -136,7 +120,7 @@
 				<env:envspace name="myfc2dspace" type="fc2dspace">
 					<env:objects>
 						<env:object type="soldier">
-							<env:property name="position">new Vector2Double(10, 10)</env:property>
+							<env:property name="position">new Vector2Double(10.0, 10.0)</env:property>
 						</env:object>
 					</env:objects>
 				

@@ -20,7 +20,9 @@ import jadex.micro.annotation.AgentBody;
 //	@Plan(trigger=@Trigger(goals=AchieveMoveToLocation.class), body=@Body(MoveToLocationPlan.class))
 //})
 public class SoldierBDI {
-
+	
+	private static int agent_number = 0;
+	
 	@Agent
 	private BDIAgent agent;
 	
@@ -31,7 +33,7 @@ public class SoldierBDI {
 	@Belief
 	protected int wind_speed;
 	@Belief
-	protected String wind_orientation; // rosa dos ventos ou ângulos
+	protected String wind_orientation;
 	@Belief
 	private Set<?> fire_intensity;
 	@Belief
@@ -39,7 +41,8 @@ public class SoldierBDI {
 	
 	@AgentBody
 	public void body(){
-		System.out.println("Agente Soldier");
+		agent_number++;
+		System.out.println("Agente Soldier Numero " + agent_number);
 	}
 	
 	public double getFireDistance() {
