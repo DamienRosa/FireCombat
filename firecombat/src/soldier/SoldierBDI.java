@@ -13,12 +13,12 @@ import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.AgentBody;
 
 @Agent
-@Plans(
-{
-	@Plan(trigger=@Trigger(goals=MaintainSelfSecurity.class), body=@Body(SelfSecurityPlan.class)),
-	@Plan(trigger=@Trigger(goals=AchieveExtinguishFire.class), body=@Body(ExtinguishFirePlan.class)),
-	@Plan(trigger=@Trigger(goals=AchieveMoveToLocation.class), body=@Body(MoveToLocationPlan.class))
-})
+//@Plans(
+//{
+//	@Plan(trigger=@Trigger(goals=MaintainSelfSecurity.class), body=@Body(SelfSecurityPlan.class)),
+//	@Plan(trigger=@Trigger(goals=AchieveExtinguishFire.class), body=@Body(ExtinguishFirePlan.class)),
+//	@Plan(trigger=@Trigger(goals=AchieveMoveToLocation.class), body=@Body(MoveToLocationPlan.class))
+//})
 public class SoldierBDI {
 
 	@Agent
@@ -39,7 +39,7 @@ public class SoldierBDI {
 	
 	@AgentBody
 	public void body(){
-		
+		System.out.println("Agente Soldier");
 	}
 	
 	public double getFireDistance() {

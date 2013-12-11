@@ -29,11 +29,11 @@
 			<!-- Declaração dos objetos ativos na grelha -->
 			<env:objecttypes>
 				<env:objecttype name="commander">
-					<env:property name="vision_range">0</env:property> <!-- change value -->
+					<env:property name="vision_range">0</env:property>
 					<env:property name="position" event="true"/>
 				</env:objecttype>
 				<env:objecttype name="soldier">
-					<env:property name="vision_range">0</env:property> <!-- change value -->
+					<env:property name="vision_range">0</env:property>
 					<env:property name="position" event="true"/>
 				</env:objecttype>
 				<env:objecttype name="fire">
@@ -43,7 +43,7 @@
 				<env:objecttype name="forest">
 				    <env:property name="position" class="IVector2" event="true"/>
 				    <env:property name="probability" class="double" />
-				    <env:property name="density" class="String" dynamic="true"/> <!-- [0, 1, 2] -->
+				    <env:property name="density" class="String" dynamic="true"/>
 				    <env:property name="burning" class="boolean"/>
 				    <env:property name="wind_direction" class="String"/>
 				</env:objecttype>
@@ -84,11 +84,9 @@
 			<!-- Perspectives define the user-interface appearance. -->
 			<env:perspectives>
 				<env:perspective name="icons" class="Perspective2D">
-					<env:drawable objecttype="commander" height="1.0" width="1.0">
-						<env:texturedrectangle layer="2" imagepath="" />
-					</env:drawable>
 					<env:drawable objecttype="soldier" height="1.0" width="1.0">
-						<env:texturedrectangle layer="2" imagepath="" />
+						<env:rectangle layer="3" color="#FFFFFF">
+						</env:rectangle>
 					</env:drawable>
 					
 					<env:drawable objecttype="fire" height="1.0" width="1.0">
@@ -113,14 +111,10 @@
 						<env:rectangle layer="1" color="#8B4513">
 						    <env:drawcondition>$object.density.equals("2")</env:drawcondition>
 						</env:rectangle>
-						
 					</env:drawable>
 					<env:prelayers>
-						<!-- <env:tiledlayer width="1.0" height="1.0" imagepath="firecombat/images/fundo.jpg" /> -->
+<!-- 						<env:tiledlayer width="1.0" height="1.0" imagepath="firecombat/images/fundo.jpg" /> -->
 					</env:prelayers>
-					<!-- <env:postlayers>
-						<env:gridlayer width="1.0" height="1.0" color="black" />
-					</env:postlayers> -->
 				</env:perspective>
 			</env:perspectives>
 			
@@ -133,14 +127,19 @@
 
 	<!-- Agent types of the application. -->
 	<componenttypes>
-		<componenttype name="Commander" filename="firecombat/Commander.agent.xml"/>
-		<componenttype name="Soldier" filename="firecombat/Soldier.agent.xml"/>
+		<componenttype name="Soldier" filename="soldier/SoldierBDI.class"/>
 	</componenttypes>
 
 	<configurations>
 		<configuration name="ConfigTest">
 			<extensions>
 				<env:envspace name="myfc2dspace" type="fc2dspace">
+					<env:objects>
+						<env:object type="soldier">
+							<env:property name="position">new Vector2Double(10, 10)</env:property>
+						</env:object>
+					</env:objects>
+				
 					<env:processes>
 					    <env:process type="forest_bg"></env:process>
 						<env:process type="fire_spread">
@@ -149,16 +148,16 @@
 							<env:property name="wind">200</env:property> [0-200] km/h -->
 						</env:process>
 					</env:processes>
+					
 					<env:observers>
 						<env:observer name="Fire Fighting Simulation" dataview="view_all" perspective="icons" />
 					</env:observers>
 				</env:envspace>
 			</extensions>
 			
-<!-- 			<components> -->
-<!-- 				<component type="Commander"/> -->
-<!-- 				<component type="Soldier"/> -->
-<!-- 			</components>			 -->
+			<components>
+				<component type="Soldier"/>
+			</components>
 		</configuration>
 	</configurations>
 
