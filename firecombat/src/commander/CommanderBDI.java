@@ -4,6 +4,7 @@ import java.util.Set;
 
 import world.Fire;
 import world.Soldier;
+import firecombat.ChatService;
 
 
 import jadex.bdiv3.BDIAgent;
@@ -13,8 +14,27 @@ import jadex.micro.annotation.Description;
 import jadex.bdiv3.annotation.Plan;
 import jadex.bdiv3.annotation.Trigger;
 
+import jadex.bridge.service.types.chat.IChatService;
+import jadex.bridge.service.types.clock.IClockService;
+import jadex.commons.future.DefaultResultListener;
+import jadex.commons.future.IFuture;
+import jadex.micro.MicroAgent;
+import jadex.micro.annotation.*;
+ 
+import java.util.Collection;
+import java.util.Iterator;
+
 @Agent
 @Description("Agent responsible for giving orders to the soldiers.")
+
+@ProvidedServices(@ProvidedService(type=IChatService.class, 
+implementation=@Implementation(ChatService.class)))
+@RequiredServices({
+@RequiredService(name="clockservice", type=IClockService.class, 
+	binding=@Binding(scope=Binding.SCOPE_PLATFORM)),
+@RequiredService(name="chatservices", type=IChatService.class, multiple=true,
+	binding=@Binding(dynamic=true, scope=Binding.SCOPE_PLATFORM))
+})
 public class CommanderBDI {
 	
 	@Agent
@@ -96,6 +116,25 @@ public class CommanderBDI {
 	
 	public void setBusySoldiers(Set<Soldier> busy_soldiers) {
 		this.busy_soldiers = busy_soldiers;
+	}
+	
+	/**
+	 *  Execute the functional body of the agent.
+	 *  Is only called once.
+	 */
+	@AgentBody
+	public void executeBody() {
+		IFuture<Collection<IChatService>>	chatservices	= agent.getServiceContainer().getRequiredServices("chatservices");
+		chatservices.addResultListener(new DefaultResultListener<Collection<IChatService>>()
+		{
+			public void resultAvailable(Collection<IChatService> result)
+			{
+				for(Iterator<IChatService> it=result.iterator(); it.hasNext(); ) {
+					IChatService cs = it.next();
+					cs.message(agent.getComponentIdentifier().getName(), "Hello", false);
+				}
+			}
+		});
 	}
 	
 //	@Plan(trigger=@Trigger(factchangeds="fire_location"))
