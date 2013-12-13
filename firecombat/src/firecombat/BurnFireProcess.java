@@ -55,25 +55,25 @@ public class BurnFireProcess extends SimplePropertyObject implements
 			lasttick += 5;
 
 			for (ISpaceObject flame : fire) {
-
-				ArrayList<ISpaceObject> neighbors = getNeighbors((IVector2) flame.getProperty("position"), space);
-				for (int i = 0; i < neighbors.size(); i++) {
-					Vector2Double pos = (Vector2Double) neighbors.get(i).getProperty("position");
-					if(pos.getXAsInteger() > 0 && pos.getXAsInteger() < sizex && (pos.getYAsInteger() > 0 && pos.getYAsInteger() < sizex)){
-						if (!((boolean) neighbors.get(i).getProperty("burning"))) {
-							double prob = rng.nextDouble();
-							if (prob >= 0.6 && prob < 0.7) {
-								neighbors.get(i).setProperty("probability", 0.6);
+				if(!(boolean) flame.getProperty("extinct")){
+					ArrayList<ISpaceObject> neighbors = getNeighbors((IVector2) flame.getProperty("position"), space);
+					for (int i = 0; i < neighbors.size(); i++) {
+						Vector2Double pos = (Vector2Double) neighbors.get(i).getProperty("position");
+						if(pos.getXAsInteger() > 0 && pos.getXAsInteger() < sizex && (pos.getYAsInteger() > 0 && pos.getYAsInteger() < sizex)){
+							if (!((boolean) neighbors.get(i).getProperty("burning"))) {
+								double prob = rng.nextDouble();
+								if (prob >= 0.6 && prob < 0.7) {
+									neighbors.get(i).setProperty("probability", 0.6);
+								}
 							}
 						}
 					}
+					if (((int) flame.getProperty("intensity")) != 3) {
+						flame.setProperty("intensity", ((int) flame.getProperty("intensity")) + 1);
+					}
+					ISpaceObject tree_pos = (ISpaceObject) space.getSpaceObjectsByGridPosition((IVector2) flame.getProperty("position"),"forest").iterator().next();
+					tree_pos.setProperty("probability", 1.0);
 				}
-				
-				if (((int) flame.getProperty("intensity")) != 3) {
-					flame.setProperty("intensity", ((int) flame.getProperty("intensity")) + 1);
-				}
-				ISpaceObject tree_pos = (ISpaceObject) space.getSpaceObjectsByGridPosition((IVector2) flame.getProperty("position"),"forest").iterator().next();
-				tree_pos.setProperty("probability", 1.0);
 			}
 
 			ISpaceObject[] forest = space.getSpaceObjectsByType("forest");
@@ -85,6 +85,7 @@ public class BurnFireProcess extends SimplePropertyObject implements
 					Map flame = new HashMap<>();
 					flame.put("position", tree.getProperty("position"));
 					flame.put("intensity", 1);
+					flame.put("extinct", false);
 					space.createSpaceObject("fire", flame, null);
 
 					tree.setProperty("burning", true);
@@ -114,6 +115,7 @@ public class BurnFireProcess extends SimplePropertyObject implements
 		Map init_fire = new HashMap<>();
 		init_fire.put("position", n_pos);
 		init_fire.put("intensity", 1);
+		init_fire.put("extinct", false);
 		space.createSpaceObject("fire", init_fire, null);
 
 		ISpaceObject tree_pos = (ISpaceObject) space

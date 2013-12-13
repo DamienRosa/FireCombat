@@ -1,41 +1,28 @@
 package soldier;
 
 import jadex.bdiv3.annotation.Goal;
-import jadex.bdiv3.annotation.GoalTargetCondition;
-import world.Location;
+import jadex.extension.envsupport.math.IVector2;
 
 @Goal
-public class AchieveMoveToLocation extends SoldierBDI {
+public class AchieveMoveToLocation {
 	
-	protected Location location;
-	
+	/** The destination. */
+	protected IVector2 destination;
+
 	/**
-	 *  Create a new goal.
-	 *  @param location The location.
+	 *  Create a new Move. 
 	 */
-	public AchieveMoveToLocation(Location location)
+	public AchieveMoveToLocation(IVector2 destination)
 	{
-//		System.out.println("created: "+location);
-		this.location = location;
-	}
-	
-	/**
-	 *  The goal is achieved when the position
-	 *  of the soldier is near to the target position.
-	 */
-	@GoalTargetCondition(beliefs="my_location")
-	public boolean checkTarget()
-	{
-//		return my_location.isNear(location);
-		return my_location.equals(location);
+		this.destination = destination;
 	}
 
 	/**
-	 *  Get the location.
-	 *  @return The location.
+	 *  Get the destination.
+	 *  @return The destination.
 	 */
-	public Location getLocation()
+	public IVector2 getDestination()
 	{
-		return location;
+		return destination;
 	}
 }

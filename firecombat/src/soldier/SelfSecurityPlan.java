@@ -10,14 +10,14 @@ import jadex.bdiv3.runtime.IPlan;
 @Plan
 public class SelfSecurityPlan {
 
-	@PlanCapability
-	protected SoldierBDI agent;
-	
-	@PlanAPI
-	protected IPlan plan;
-	
-	@PlanReason
-	protected MaintainSelfSecurity goal;
+//	@PlanCapability
+//	protected SoldierBDI agent;
+//	
+//	@PlanAPI
+//	protected IPlan plan;
+//	
+//	@PlanReason
+//	protected MaintainSelfSecurity goal;
 	
 	@PlanBody
 	public void body(){

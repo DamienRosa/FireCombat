@@ -32,8 +32,7 @@ public class MoveTask extends AbstractTask {
 		double	distance	= ((Space2D)space).getDistance(location, destination).getAsDouble();
 //		double	maxdist	= progress*speed*0.001;
 		double	maxdist	= progress*0.001;
-		IVector2	newloc	= distance<=maxdist ? destination
-			: direction.multiply(maxdist).add(location);
+		IVector2	newloc	= distance<=maxdist ? destination : direction.multiply(maxdist).add(location);
 		((Space2D)space).setPosition(obj.getId(), newloc);		
 		if(newloc==destination)
 			setFinished(space, obj, true);
