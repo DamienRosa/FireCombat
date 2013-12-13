@@ -61,7 +61,6 @@
 
 			<!-- Declaration of the relationships between agents and their avatar objects in the space. -->
 			<env:avatarmappings>
-				<env:avatarmapping componenttype="Commander" objecttype="commander"/>
 				<env:avatarmapping componenttype="Soldier" objecttype="soldier"/>
 			</env:avatarmappings>
 			
@@ -137,8 +136,6 @@
 					<env:observers>
 						<env:observer name="Fire Fighting Simulation" dataview="view_all" perspective="icons" />
 					</env:observers>
-					
-		
 				</env:envspace>
 			</extensions>
 			

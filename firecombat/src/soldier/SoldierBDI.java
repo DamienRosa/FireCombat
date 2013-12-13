@@ -2,19 +2,30 @@ package soldier;
 
 import java.util.Set;
 
-import world.Location;
+import firecombat.ChatService;
+import firecombat.IChatService;
+
 import jadex.bdiv3.BDIAgent;
 import jadex.bdiv3.annotation.Belief;
-import jadex.bdiv3.annotation.Body;
-import jadex.bdiv3.annotation.Plan;
 import jadex.bdiv3.annotation.Plans;
+import jadex.bdiv3.annotation.Plan;
 import jadex.bdiv3.annotation.Trigger;
+import jadex.bdiv3.annotation.Body;
+import jadex.bridge.service.types.clock.IClockService;
 import jadex.extension.envsupport.environment.ISpaceObject;
 import jadex.extension.envsupport.environment.space2d.Grid2D;
 import jadex.extension.envsupport.environment.space2d.Space2D;
 import jadex.extension.envsupport.math.IVector2;
+import jadex.extension.envsupport.math.Vector2Double;
 import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.AgentBody;
+import jadex.micro.annotation.Binding;
+import jadex.micro.annotation.Implementation;
+import jadex.micro.annotation.ProvidedService;
+import jadex.micro.annotation.ProvidedServices;
+import jadex.micro.annotation.RequiredService;
+import jadex.micro.annotation.RequiredServices;
+import world.Location;
 
 @Agent
 @Plans(
@@ -24,13 +35,28 @@ import jadex.micro.annotation.AgentBody;
 	@Plan(trigger=@Trigger(goals=AchieveMoveToLocation.class), body=@Body(MoveToLocationPlan.class)),
 	@Plan(body=@Body(WaitForOrderPlan.class))
 })
+@ProvidedServices(@ProvidedService(type=IChatService.class, 
+implementation=@Implementation(ChatService.class)))
+@RequiredServices({
+@RequiredService(name="clockservice", type=IClockService.class, 
+	binding=@Binding(scope=Binding.SCOPE_PLATFORM)),
+@RequiredService(name="chatservices", type=IChatService.class, multiple=true,
+	binding=@Binding(dynamic=true, scope=Binding.SCOPE_PLATFORM))
+})
 public class SoldierBDI {
 	
 	private static int agent_number = 0;
 	
+	public SoldierBDI() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	@Agent
 	protected BDIAgent agent;
-	
+	@Belief
+	protected Grid2D env = (Grid2D)agent.getParentAccess().getExtension("myfc2dspace").get();
+	@Belief
+	protected ISpaceObject myself = env.getAvatar(agent.getComponentDescription(), agent.getModel().getFullName());
 	@Belief
 	protected Location my_location;
 	@Belief
@@ -55,11 +81,11 @@ public class SoldierBDI {
 	}
 	
 	public Grid2D getEnvironment() {
-		return (Grid2D) agent.getParentAccess().getExtension("fc2dspace").get();
+		return env;
 	}
 	
 	public ISpaceObject getMyself() {
-		return getEnvironment().getAvatar(agent.getComponentDescription(), agent.getModel().getFullName());
+		return myself; 
 	}
 	
 	/** The home position (=first position). */
