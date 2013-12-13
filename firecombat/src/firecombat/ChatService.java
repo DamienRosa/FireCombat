@@ -1,18 +1,25 @@
 package firecombat;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
-import jadex.bridge.IInputConnection;
+
 import jadex.bridge.IInternalAccess;
-import jadex.bridge.IOutputConnection;
+import jadex.bridge.nonfunctional.INFProperty;
+import jadex.bridge.nonfunctional.INFPropertyMetaInfo;
+import jadex.bridge.service.IServiceIdentifier;
 import jadex.bridge.service.annotation.Service;
 import jadex.bridge.service.annotation.ServiceComponent;
-import jadex.bridge.service.types.chat.IChatService;
+import jadex.bridge.service.annotation.ServiceStart;
 import jadex.bridge.service.types.clock.IClockService;
+import jadex.commons.MethodInfo;
+import jadex.commons.future.DelegationResultListener;
+import jadex.commons.future.Future;
 import jadex.commons.future.IFuture;
-import jadex.commons.future.ITerminableFuture;
-import jadex.commons.future.ITerminableIntermediateFuture;
+
+
 
 @Service
 public class ChatService implements IChatService {
@@ -28,56 +35,26 @@ public class ChatService implements IChatService {
 	*  @param text The message text.
 	*/
 	
-
-	@Override
-	public IFuture<String> getNickName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IFuture<byte[]> getImage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IFuture<String> getStatus() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IFuture<Void> status(String nick, String status, byte[] image) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ITerminableIntermediateFuture<Long> sendFile(String nick,
-			String filename, long size, String id, IInputConnection con) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ITerminableFuture<IOutputConnection> startUpload(String nick,
-			String filename, long size, String id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IFuture<Void> message(String sender, String text,
-			boolean privatemessage) {
-		
-		System.out.println(agent.getComponentIdentifier().getLocalName()+" received at "
-				+format.format(new Date(clock.getTime()))+" from: "+sender+" message: "+text);
-		return null;
-	}
-	
 	public void message(final String sender,final String text) {
 		System.out.println(agent.getComponentIdentifier().getLocalName()+" received at "
 			+format.format(new Date(clock.getTime()))+" from: "+sender+" message: "+text);
 	}
+	
+	@ServiceStart
+	public IFuture<Void> startService(){
+		format = new SimpleDateFormat("10:10:10");
+		final Future ret = new Future();
+		
+		IFuture<IClockService> fut = agent.getServiceContainer().getRequiredService("clockservice");
+		fut.addResultListener(new DelegationResultListener<IClockService>(ret)
+		{
+		  public void customResultAvailable(IClockService result)
+		  {
+		    clock = result;
+		    super.customResultAvailable(null);
+		  }
+		});
+		return ret;
+	}
+
 }
