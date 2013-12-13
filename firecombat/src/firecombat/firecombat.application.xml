@@ -112,6 +112,7 @@
 	<!-- Agent types of the application. -->
 	<componenttypes>
 		<componenttype name="Soldier" filename="soldier/SoldierBDI.class"/>
+		<componenttype name="Commander" filename="commander/CommanderBDI.class"/>
 	</componenttypes>
 
 	<configurations>
@@ -143,6 +144,7 @@
 			
 			<components>
 				<component type="Soldier"/>
+				<component type="Commander"/>
 			</components>
 		</configuration>
 	</configurations>

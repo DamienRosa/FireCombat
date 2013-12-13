@@ -1,28 +1,28 @@
 package commander;
 
+import jadex.bdiv3.BDIAgent;
+import jadex.bdiv3.annotation.Belief;
+import jadex.bridge.service.types.clock.IClockService;
+import jadex.commons.future.DefaultResultListener;
+import jadex.commons.future.IFuture;
+import jadex.micro.annotation.Agent;
+import jadex.micro.annotation.AgentBody;
+import jadex.micro.annotation.Binding;
+import jadex.micro.annotation.Description;
+import jadex.micro.annotation.Implementation;
+import jadex.micro.annotation.ProvidedService;
+import jadex.micro.annotation.ProvidedServices;
+import jadex.micro.annotation.RequiredService;
+import jadex.micro.annotation.RequiredServices;
+
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Set;
 
 import world.Fire;
 import world.Soldier;
 import firecombat.ChatService;
-
-
-import jadex.bdiv3.BDIAgent;
-import jadex.bdiv3.annotation.Belief;
-import jadex.micro.annotation.Agent;
-import jadex.micro.annotation.Description;
-import jadex.bdiv3.annotation.Plan;
-import jadex.bdiv3.annotation.Trigger;
-
-import jadex.bridge.service.types.chat.IChatService;
-import jadex.bridge.service.types.clock.IClockService;
-import jadex.commons.future.DefaultResultListener;
-import jadex.commons.future.IFuture;
-import jadex.micro.MicroAgent;
-import jadex.micro.annotation.*;
- 
-import java.util.Collection;
-import java.util.Iterator;
+import firecombat.IChatService;
 
 @Agent
 @Description("Agent responsible for giving orders to the soldiers.")
@@ -38,7 +38,7 @@ implementation=@Implementation(ChatService.class)))
 public class CommanderBDI {
 	
 	@Agent
-	protected BDIAgent agent;
+	public BDIAgent agent;
 	
 //	@Belief
 //	protected IEnvironment environment = Environment.getInstance();
@@ -131,7 +131,7 @@ public class CommanderBDI {
 			{
 				for(Iterator<IChatService> it=result.iterator(); it.hasNext(); ) {
 					IChatService cs = it.next();
-					cs.message(agent.getComponentIdentifier().getName(), "Hello", false);
+					cs.message(agent.getComponentIdentifier().getName(), "Hello");
 				}
 			}
 		});
