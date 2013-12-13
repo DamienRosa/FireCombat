@@ -1,9 +1,9 @@
 package soldier;
 
-import soldier.MoveTask;
 
 import java.util.HashMap;
 import java.util.Map;
+
 
 import jadex.bdiv3.annotation.Plan;
 import jadex.bdiv3.annotation.PlanAPI;
@@ -20,7 +20,7 @@ import jadex.extension.envsupport.environment.ISpaceObject;
 import jadex.extension.envsupport.math.IVector2;
 
 @Plan
-public class MoveToLocationPlan /*extends SoldierBDI*/ {
+public class MoveToLocationPlan {
 	
 	@PlanCapability
 	private SoldierBDI agent;
@@ -33,11 +33,10 @@ public class MoveToLocationPlan /*extends SoldierBDI*/ {
 	
 	@PlanBody
 	public void body(){
-		System.out.println("Entrei");
+		ISpaceObject myself = agent.getMyself();
 		IVector2 destination = goal.getDestination();
 		
-		System.out.println(agent.myself);
-		System.out.println("move plan: "+destination);
+		System.out.println("I'm the move to location plan!");
 		
 //		if(!((String)myself.getProperty("state")).equals("moving_to_hospital") && dest.equals(home))
 //			myself.setProperty("state", "moving_home");
@@ -50,7 +49,7 @@ public class MoveToLocationPlan /*extends SoldierBDI*/ {
 		
 		Future<Void> future = new Future<Void>();
 		DelegationResultListener<Void> listener = new DelegationResultListener<Void>(future, true);
-		Object mtaskid = space.createObjectTask(MoveTask.PROPERTY_TYPENAME, properties, agent.myself.getId());
+		Object mtaskid = space.createObjectTask(MoveTask.PROPERTY_TYPENAME, properties, myself.getId());
 		space.addTaskListener(mtaskid, agent.myself.getId(), listener);
 		future.get();
 //		System.out.println("move after second task: "+plan);

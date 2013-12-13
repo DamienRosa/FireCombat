@@ -19,6 +19,7 @@
 		<import>jadex.extension.envsupport.environment.space2d.*</import>
 		<import>jadex.extension.envsupport.environment.RoundBasedExecutor</import>
 		<import>jadex.bdi.planlib.*</import>
+		<import>soldier.*</import>
 	</imports>
 
 	<!-- Tipos de espaços da aplicação. O espaço é partilhado por agentes da 
@@ -30,7 +31,7 @@
 			<env:objecttypes>
 				<env:objecttype name="soldier">
 					<env:property name="position" event="true"/>
-					<env:property name="speed" class="double">0.05</env:property>
+					<env:property name="speed" class="double">5.0</env:property>
 					<env:property name="extinguished" class="double">0</env:property>
 <!-- 					<env:property name="cleared" class="double">0</env:property> -->
 					<env:property name="state" class="String"></env:property>
@@ -48,6 +49,10 @@
 				    <env:property name="wind_direction" class="String"/>
 				</env:objecttype>
 			</env:objecttypes>
+			
+			<env:tasktypes>
+				<env:tasktype name="move" class="MoveTask" />
+			</env:tasktypes>
 
 			<!-- Processes run on their own in the environment. -->
 			<env:processtypes>

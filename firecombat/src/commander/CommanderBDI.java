@@ -131,14 +131,9 @@ public class CommanderBDI {
 			{
 				for(Iterator<IChatService> it=result.iterator(); it.hasNext(); ) {
 					IChatService cs = it.next();
-					cs.message(agent.getComponentIdentifier().getName(), "Hello");
+					cs.message(agent.getComponentIdentifier().getLocalName(), "Hello");
 				}
 			}
 		});
 	}
-	
-//	@Plan(trigger=@Trigger(factchangeds="fire_location"))
-//	protected void printMessage() {
-//		System.out.println("Fire found!");
-//	}
 }

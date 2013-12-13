@@ -35,21 +35,15 @@ import world.Location;
 	@Plan(trigger=@Trigger(goals=AchieveMoveToLocation.class), body=@Body(MoveToLocationPlan.class)),
 	@Plan(body=@Body(WaitForOrderPlan.class))
 })
-@ProvidedServices(@ProvidedService(type=IChatService.class, 
-implementation=@Implementation(ChatService.class)))
-@RequiredServices({
-@RequiredService(name="clockservice", type=IClockService.class, 
-	binding=@Binding(scope=Binding.SCOPE_PLATFORM)),
-@RequiredService(name="chatservices", type=IChatService.class, multiple=true,
-	binding=@Binding(dynamic=true, scope=Binding.SCOPE_PLATFORM))
+@ProvidedServices(@ProvidedService(type=IChatService.class, implementation=@Implementation(ChatService.class)))
+@RequiredServices(
+{
+	@RequiredService(name="clockservice", type=IClockService.class, binding=@Binding(scope=Binding.SCOPE_PLATFORM)),
+	@RequiredService(name="chatservices", type=IChatService.class, multiple=true, binding=@Binding(dynamic=true, scope=Binding.SCOPE_PLATFORM))
 })
 public class SoldierBDI {
 	
 	private static int agent_number = 0;
-	
-	public SoldierBDI() {
-		// TODO Auto-generated constructor stub
-	}
 	
 	@Agent
 	protected BDIAgent agent;
@@ -76,7 +70,6 @@ public class SoldierBDI {
 		System.out.println("Agente Soldier Numero " + agent_number);
 //		agent.adoptPlan(new WaitForOrderPlan());
 //		agent.dispatchTopLevelGoal(new AchieveMoveToLocation(new Vector2Double(20.0, 20.0))).get();
-		agent.adoptPlan(new MoveToLocationPlan());
 		System.out.println("Good bye!");
 	}
 	

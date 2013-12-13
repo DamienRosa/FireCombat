@@ -5,7 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
+import soldier.AchieveMoveToLocation;
 
+
+import jadex.bdiv3.BDIAgent;
 import jadex.bridge.IInternalAccess;
 import jadex.bridge.nonfunctional.INFProperty;
 import jadex.bridge.nonfunctional.INFPropertyMetaInfo;
@@ -18,6 +21,7 @@ import jadex.commons.MethodInfo;
 import jadex.commons.future.DelegationResultListener;
 import jadex.commons.future.Future;
 import jadex.commons.future.IFuture;
+import jadex.extension.envsupport.math.Vector2Double;
 
 
 
@@ -25,7 +29,8 @@ import jadex.commons.future.IFuture;
 public class ChatService implements IChatService {
 	/** The agent. */
 	@ServiceComponent
-	protected IInternalAccess agent;
+	protected BDIAgent agent;
+//	protected IInternalAccess agent;
 	protected IClockService clock;
 	protected DateFormat format;
  
@@ -35,9 +40,18 @@ public class ChatService implements IChatService {
 	*  @param text The message text.
 	*/
 	
-	public void message(final String sender,final String text) {
+	public void message(final String sender, final String text) {
+//		System.out.println(sender_agent.getComponentIdentifier().getName());
+		
+//		System.out.println(agent.getComponentIdentifier().getLocalName());
+
 		System.out.println(agent.getComponentIdentifier().getLocalName()+" received at "
 			+format.format(new Date(clock.getTime()))+" from: "+sender+" message: "+text);
+		
+		if (agent.getComponentIdentifier().getLocalName().equals("Soldier"))
+		{
+			agent.dispatchTopLevelGoal(new AchieveMoveToLocation(new Vector2Double(20.0, 20.0))).get();
+		}
 	}
 	
 	@ServiceStart

@@ -14,6 +14,9 @@ public class MoveTask extends AbstractTask {
 	
 	/** The destination property. */
 	public static final String	PROPERTY_DESTINATION = "destination";
+	
+	/** The speed property. */
+	public static final String	PROPERTY_SPEED = "speed";
 		
 	//-------- IObjectTask methods --------
 	
@@ -27,11 +30,11 @@ public class MoveTask extends AbstractTask {
 	{
 		IVector2 destination = (IVector2)getProperty(PROPERTY_DESTINATION);
 		IVector2 location = (IVector2)obj.getProperty(Space2D.PROPERTY_POSITION);
-//		double	speed	= ((Number)obj.getProperty("speed")).doubleValue();
+		double	speed	= ((Number)obj.getProperty("speed")).doubleValue();
 		IVector2 direction	= destination.copy().subtract(location).normalize();
 		double	distance	= ((Space2D)space).getDistance(location, destination).getAsDouble();
-//		double	maxdist	= progress*speed*0.001;
-		double	maxdist	= progress*0.001;
+		double	maxdist	= progress*speed*0.001;
+//		double	maxdist	= progress*0.001;
 		IVector2	newloc	= distance<=maxdist ? destination : direction.multiply(maxdist).add(location);
 		((Space2D)space).setPosition(obj.getId(), newloc);		
 		if(newloc==destination)
