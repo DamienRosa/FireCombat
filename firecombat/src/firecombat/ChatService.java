@@ -42,7 +42,7 @@ public class ChatService implements IChatService {
 	
 	@ServiceStart
 	public IFuture<Void> startService(){
-		format = new SimpleDateFormat("10:10:10");
+		format = new SimpleDateFormat("hh:mm:ss");
 		final Future ret = new Future();
 		
 		IFuture<IClockService> fut = agent.getServiceContainer().getRequiredService("clockservice");
