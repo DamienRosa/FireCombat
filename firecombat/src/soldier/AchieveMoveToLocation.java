@@ -12,8 +12,7 @@ public class AchieveMoveToLocation {
 	/**
 	 *  Create a new Move. 
 	 */
-	public AchieveMoveToLocation(IVector2 destination)
-	{
+	public AchieveMoveToLocation(IVector2 destination){
 		this.destination = destination;
 	}
 
@@ -21,8 +20,7 @@ public class AchieveMoveToLocation {
 	 *  Get the destination.
 	 *  @return The destination.
 	 */
-	public IVector2 getDestination()
-	{
+	public IVector2 getDestination(){
 		return destination;
 	}
 }

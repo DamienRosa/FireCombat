@@ -24,6 +24,7 @@ import jadex.commons.Tuple2;
 import jadex.commons.future.ExceptionDelegationResultListener;
 import jadex.commons.future.Future;
 import jadex.commons.future.IFuture;
+import jadex.extension.envsupport.math.IVector2;
 import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.AgentBody;
 
@@ -44,5 +45,13 @@ import world.Soldier;
 @Goal(unique=true)
 public class AchieveSendSoldiers {
 
+	private Set<IVector2> positions;
 	
+	public AchieveSendSoldiers(Set<IVector2> positions) {
+		this.positions = positions;
+	}
+	
+	public Set<IVector2> getPositions(){
+		return positions;
+	}
 }

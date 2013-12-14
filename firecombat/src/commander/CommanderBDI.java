@@ -2,9 +2,15 @@ package commander;
 
 import jadex.bdiv3.BDIAgent;
 import jadex.bdiv3.annotation.Belief;
+import jadex.bdiv3.annotation.Body;
+import jadex.bdiv3.annotation.Plan;
+import jadex.bdiv3.annotation.Plans;
+import jadex.bdiv3.annotation.Trigger;
 import jadex.bridge.service.types.clock.IClockService;
 import jadex.commons.future.DefaultResultListener;
 import jadex.commons.future.IFuture;
+import jadex.extension.envsupport.environment.ISpaceObject;
+import jadex.extension.envsupport.environment.space2d.Grid2D;
 import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.AgentBody;
 import jadex.micro.annotation.Binding;
@@ -19,30 +25,34 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
+import soldier.AchieveMoveToLocation;
+import soldier.MoveToLocationPlan;
+import soldier.WaitForOrderPlan;
+
 import world.Fire;
 import world.Soldier;
 import firecombat.ChatService;
 import firecombat.IChatService;
 
 @Agent
-@Description("Agent responsible for giving orders to the soldiers.")
-
-@ProvidedServices(@ProvidedService(type=IChatService.class, 
-implementation=@Implementation(ChatService.class)))
-@RequiredServices({
-@RequiredService(name="clockservice", type=IClockService.class, 
-	binding=@Binding(scope=Binding.SCOPE_PLATFORM)),
-@RequiredService(name="chatservices", type=IChatService.class, multiple=true,
-	binding=@Binding(dynamic=true, scope=Binding.SCOPE_PLATFORM))
+@Plans(
+{
+	@Plan(trigger=@Trigger(goals=AchieveSendSoldiers.class), body=@Body(SendSoldiersPlan.class))
+})
+@ProvidedServices(@ProvidedService(type=IChatService.class, implementation=@Implementation(ChatService.class)))
+@RequiredServices(
+{
+	@RequiredService(name="clockservice", type=IClockService.class, binding=@Binding(scope=Binding.SCOPE_PLATFORM)),
+	@RequiredService(name="chatservices", type=IChatService.class, multiple=true, binding=@Binding(dynamic=true, scope=Binding.SCOPE_PLATFORM))
 })
 public class CommanderBDI {
 	
 	@Agent
 	public BDIAgent agent;
-	
-//	@Belief
-//	protected IEnvironment environment = Environment.getInstance();
-	
+	@Belief
+	protected Grid2D space = (Grid2D)agent.getParentAccess().getExtension("myfc2dspace").get();
+	@Belief
+	protected ISpaceObject myself = space.getAvatar(agent.getComponentDescription(), agent.getModel().getFullName());
 	@Belief
 	private int wind_speed;
 	@Belief
@@ -61,6 +71,14 @@ public class CommanderBDI {
 	private double my_vision = 1; // não tenho a certeza do valor mas deduzo que 1 seja visão total
 	
 	// um objectivo deste agente é procurar por um incêncio (apenas pela modificação do ambiente)
+	
+	public Grid2D getSpace() {
+		return space;
+	}
+	
+	public ISpaceObject getMyself() {
+		return myself;
+	}
 	
 	public int getWindSpeed() {
 		return wind_speed;

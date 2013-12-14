@@ -3,21 +3,14 @@ package firecombat;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
-
 import soldier.AchieveMoveToLocation;
 
 
 import jadex.bdiv3.BDIAgent;
-import jadex.bridge.IInternalAccess;
-import jadex.bridge.nonfunctional.INFProperty;
-import jadex.bridge.nonfunctional.INFPropertyMetaInfo;
-import jadex.bridge.service.IServiceIdentifier;
 import jadex.bridge.service.annotation.Service;
 import jadex.bridge.service.annotation.ServiceComponent;
 import jadex.bridge.service.annotation.ServiceStart;
 import jadex.bridge.service.types.clock.IClockService;
-import jadex.commons.MethodInfo;
 import jadex.commons.future.DelegationResultListener;
 import jadex.commons.future.Future;
 import jadex.commons.future.IFuture;
@@ -30,7 +23,6 @@ public class ChatService implements IChatService {
 	/** The agent. */
 	@ServiceComponent
 	protected BDIAgent agent;
-//	protected IInternalAccess agent;
 	protected IClockService clock;
 	protected DateFormat format;
  
@@ -54,6 +46,7 @@ public class ChatService implements IChatService {
 		}
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@ServiceStart
 	public IFuture<Void> startService(){
 		format = new SimpleDateFormat("hh:mm:ss");

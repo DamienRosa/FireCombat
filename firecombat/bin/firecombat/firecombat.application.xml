@@ -52,6 +52,7 @@
 			
 			<env:tasktypes>
 				<env:tasktype name="move" class="MoveTask" />
+				<env:tasktype name="extinguish" class="ExtinguishTask" />
 			</env:tasktypes>
 
 			<!-- Processes run on their own in the environment. -->
@@ -124,9 +125,9 @@
 			<extensions>
 				<env:envspace name="myfc2dspace" type="fc2dspace">
 					<env:objects>
-						<env:object type="soldier">
-							<env:property name="position">new Vector2Double(10.0, 10.0)</env:property>
-						</env:object>
+<!-- 						<env:object type="soldier"> -->
+<!-- 							<env:property name="position">new Vector2Double(10.0, 10.0)</env:property> -->
+<!-- 						</env:object> -->
 					</env:objects>
 				
 					<env:processes>

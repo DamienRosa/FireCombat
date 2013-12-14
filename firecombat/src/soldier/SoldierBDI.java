@@ -1,5 +1,7 @@
 package soldier;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Set;
 
 import firecombat.ChatService;
@@ -12,6 +14,8 @@ import jadex.bdiv3.annotation.Plan;
 import jadex.bdiv3.annotation.Trigger;
 import jadex.bdiv3.annotation.Body;
 import jadex.bridge.service.types.clock.IClockService;
+import jadex.commons.future.DefaultResultListener;
+import jadex.commons.future.IFuture;
 import jadex.extension.envsupport.environment.ISpaceObject;
 import jadex.extension.envsupport.environment.space2d.Grid2D;
 import jadex.extension.envsupport.environment.space2d.Space2D;
@@ -31,7 +35,7 @@ import world.Location;
 @Plans(
 {
 //	@Plan(trigger=@Trigger(goals=MaintainSelfSecurity.class), body=@Body(SelfSecurityPlan.class)),
-//	@Plan(trigger=@Trigger(goals=AchieveExtinguishFire.class), body=@Body(ExtinguishFirePlan.class)),
+	@Plan(trigger=@Trigger(goals=AchieveExtinguishFire.class), body=@Body(ExtinguishFirePlan.class)),
 	@Plan(trigger=@Trigger(goals=AchieveMoveToLocation.class), body=@Body(MoveToLocationPlan.class)),
 	@Plan(body=@Body(WaitForOrderPlan.class))
 })
@@ -48,11 +52,11 @@ public class SoldierBDI {
 	@Agent
 	protected BDIAgent agent;
 	@Belief
-	protected Grid2D env = (Grid2D)agent.getParentAccess().getExtension("myfc2dspace").get();
+	protected Grid2D space = (Grid2D)agent.getParentAccess().getExtension("myfc2dspace").get();
 	@Belief
-	protected ISpaceObject myself = env.getAvatar(agent.getComponentDescription(), agent.getModel().getFullName());
-	@Belief
-	protected Location my_location;
+	protected ISpaceObject myself = space.getAvatar(agent.getComponentDescription(), agent.getModel().getFullName());
+//	@Belief
+//	protected Location my_location;
 	@Belief
 	protected double fire_distance;
 	@Belief
@@ -68,13 +72,24 @@ public class SoldierBDI {
 	public void body(){		
 		agent_number++;
 		System.out.println("Agente Soldier Numero " + agent_number);
-//		agent.adoptPlan(new WaitForOrderPlan());
-//		agent.dispatchTopLevelGoal(new AchieveMoveToLocation(new Vector2Double(20.0, 20.0))).get();
 		System.out.println("Good bye!");
+		
+		//CHAT
+//		IFuture<Collection<IChatService>>	chatservices	= agent.getServiceContainer().getRequiredServices("chatservices");
+//		chatservices.addResultListener(new DefaultResultListener<Collection<IChatService>>()
+//		{
+//			public void resultAvailable(Collection<IChatService> result)
+//			{
+//				for(Iterator<IChatService> it=result.iterator(); it.hasNext(); ) {
+//					IChatService cs = it.next();
+//					cs.message(agent.getComponentIdentifier().getLocalName(), "Hello");
+//				}
+//			}
+//		});
 	}
 	
-	public Grid2D getEnvironment() {
-		return env;
+	public Grid2D getSpace() {
+		return space;
 	}
 	
 	public ISpaceObject getMyself() {
@@ -91,7 +106,6 @@ public class SoldierBDI {
 	}
 	
 	
-	
 	public double getFireDistance() {
 		return fire_distance;
 	}
@@ -100,9 +114,9 @@ public class SoldierBDI {
 		return fire_intensity;
 	}
 	
-	public Location getMyLocation() {
-		return my_location;
-	}
+//	public Location getMyLocation() {
+//		return my_location;
+//	}
 	
 	public Set<?> getVegetationState() {
 		return vegetation_state;
@@ -124,9 +138,9 @@ public class SoldierBDI {
 		this.fire_intensity = fire_intensity;
 	}
 	
-	public void setMyLocation(Location my_location) {
-		this.my_location = my_location;
-	}
+//	public void setMyLocation(Location my_location) {
+//		this.my_location = my_location;
+//	}
 	
 	public void setVegetationState(Set<?> vegetation_state) {
 		this.vegetation_state = vegetation_state;
