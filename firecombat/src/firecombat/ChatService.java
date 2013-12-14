@@ -3,6 +3,8 @@ package firecombat;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import soldier.AchieveExtinguishFire;
 import soldier.AchieveMoveToLocation;
 
 
@@ -14,6 +16,7 @@ import jadex.bridge.service.types.clock.IClockService;
 import jadex.commons.future.DelegationResultListener;
 import jadex.commons.future.Future;
 import jadex.commons.future.IFuture;
+import jadex.extension.envsupport.math.IVector2;
 import jadex.extension.envsupport.math.Vector2Double;
 
 
@@ -32,17 +35,21 @@ public class ChatService implements IChatService {
 	*  @param text The message text.
 	*/
 	
-	public void message(final String sender, final String text) {
+	public void message(final String sender, final String msg) {
 //		System.out.println(sender_agent.getComponentIdentifier().getName());
-		
 //		System.out.println(agent.getComponentIdentifier().getLocalName());
 
-		System.out.println(agent.getComponentIdentifier().getLocalName()+" received at "
-			+format.format(new Date(clock.getTime()))+" from: "+sender+" message: "+text);
+//		System.out.println(agent.getComponentIdentifier().getLocalName()+" received at "
+//			+format.format(new Date(clock.getTime()))+" from: "+sender+" message: "+text);
 		
 		if (agent.getComponentIdentifier().getLocalName().equals("Soldier"))
 		{
-			agent.dispatchTopLevelGoal(new AchieveMoveToLocation(new Vector2Double(20.0, 20.0))).get();
+			System.out.println(sender+" send a message");
+			System.out.println("Agent "+agent.getComponentIdentifier().getLocalName()+" received the message");
+			
+			Vector2Double destination = new Vector2Double(Double.parseDouble(msg.split("-")[0]), Double.parseDouble(msg.split("-")[1]));
+//			agent.dispatchTopLevelGoal(new AchieveMoveToLocation(new Vector2Double(20.0, 20.0))).get();
+			agent.dispatchTopLevelGoal(new AchieveExtinguishFire(destination)).get();
 		}
 	}
 	

@@ -45,13 +45,13 @@ import world.Soldier;
 @Goal(unique=true)
 public class AchieveSendSoldiers {
 
-	private Set<IVector2> positions;
+	private IVector2 position;
 	
-	public AchieveSendSoldiers(Set<IVector2> positions) {
-		this.positions = positions;
+	public AchieveSendSoldiers(IVector2 position) {
+		this.position = position;
 	}
 	
-	public Set<IVector2> getPositions(){
-		return positions;
+	public IVector2 getPosition(){
+		return position;
 	}
 }

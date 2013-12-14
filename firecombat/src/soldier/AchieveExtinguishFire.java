@@ -1,7 +1,9 @@
 package soldier;
 
+import jadex.bdiv3.annotation.Goal;
 import jadex.extension.envsupport.math.IVector2;
 
+@Goal
 public class AchieveExtinguishFire {
 	
 	private IVector2 combat_position;

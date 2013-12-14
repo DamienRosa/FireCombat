@@ -40,6 +40,7 @@
 					<env:property name="position" event="true"/>
 					<env:property name="intensity" class="Integer" dynamic="true"/>
 					<env:property name="extinct" class="boolean"/>
+					<env:property name="size" class="Integer"></env:property>
 				</env:objecttype>
 				<env:objecttype name="forest">
 				    <env:property name="position" class="IVector2" event="true"/>
@@ -80,13 +81,13 @@
 					
 					<env:drawable objecttype="fire" height="1.0" width="1.0">
 					    <env:rectangle layer="2" color="#FFA500">
-						     <env:drawcondition>$object.intensity.equals(1)</env:drawcondition>
+						     <env:drawcondition>($object.intensity.equals(1))&amp;&amp;($object.extinct.equals(false))</env:drawcondition>
 						</env:rectangle>
 						<env:rectangle layer="2" color="#FF0000">
-						     <env:drawcondition>$object.intensity.equals(2)</env:drawcondition>
+						     <env:drawcondition>($object.intensity.equals(2))&amp;&amp;($object.extinct.equals(false))</env:drawcondition>
 						</env:rectangle>
 						<env:rectangle layer="2" color="black">
-						     <env:drawcondition>$object.intensity.equals(3)</env:drawcondition>
+						     <env:drawcondition>($object.intensity.equals(3))&amp;&amp;($object.extinct.equals(false))</env:drawcondition>
 						</env:rectangle>
 					</env:drawable>
 					

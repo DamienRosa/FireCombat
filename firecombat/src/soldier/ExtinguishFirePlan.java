@@ -32,16 +32,19 @@ public class ExtinguishFirePlan {
 	@PlanBody
 	public void body(){
 		ISpaceObject myself = agent.getMyself();
-		IVector2 position = goal.getCombatPosition();
+		IVector2 combat_position = goal.getCombatPosition();
+		
+		System.out.println("I'm the extinguish fire plan!");
 		
 		/** Move to Location */
-		AchieveMoveToLocation move = new AchieveMoveToLocation(position);
-		plan.dispatchSubgoal(move);
+		AchieveMoveToLocation move = new AchieveMoveToLocation(combat_position);
+		plan.dispatchSubgoal(move).get();
 		
+		System.out.println("I only got here after the movement has finished!");
 		/** Extinguish Fire */
 		myself.setProperty("state", "extinguishing_fire");
 		Map<String, Object> properties = new HashMap<String, Object>();
-		properties.put(ExtinguishTask.PROPERTY_POSITION, position);
+		properties.put(ExtinguishTask.PROPERTY_POSITION, combat_position); // acho que não é preciso colocar esta informação
 		properties.put(AbstractTask.PROPERTY_CONDITION, new PlanFinishedTaskCondition(plan));
 		IEnvironmentSpace space = agent.getSpace();
 		

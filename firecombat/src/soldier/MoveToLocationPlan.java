@@ -41,13 +41,15 @@ public class MoveToLocationPlan {
 //		if(!((String)myself.getProperty("state")).equals("moving_to_hospital") && dest.equals(home))
 //			myself.setProperty("state", "moving_home");
 		
-		myself.setProperty("state", "extinguishing_fire");
+		myself.setProperty("state", "moving_to_location");
 		
 		// Create a move task
 		Map<String, Object> properties = new HashMap<String, Object>();
 		properties.put(MoveTask.PROPERTY_DESTINATION, destination);
 		properties.put(AbstractTask.PROPERTY_CONDITION, new PlanFinishedTaskCondition(plan));
 		IEnvironmentSpace space = agent.getSpace();
+		
+		System.out.println("I get here!");
 		
 		Future<Void> future = new Future<Void>();
 		DelegationResultListener<Void> listener = new DelegationResultListener<Void>(future, true);

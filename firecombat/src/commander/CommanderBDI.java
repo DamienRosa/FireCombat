@@ -11,6 +11,7 @@ import jadex.commons.future.DefaultResultListener;
 import jadex.commons.future.IFuture;
 import jadex.extension.envsupport.environment.ISpaceObject;
 import jadex.extension.envsupport.environment.space2d.Grid2D;
+import jadex.extension.envsupport.math.IVector2;
 import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.AgentBody;
 import jadex.micro.annotation.Binding;
@@ -37,6 +38,7 @@ import firecombat.IChatService;
 @Agent
 @Plans(
 {
+	@Plan(body=@Body(FindFirePlan.class)),
 	@Plan(trigger=@Trigger(goals=AchieveSendSoldiers.class), body=@Body(SendSoldiersPlan.class))
 })
 @ProvidedServices(@ProvidedService(type=IChatService.class, implementation=@Implementation(ChatService.class)))
@@ -58,7 +60,7 @@ public class CommanderBDI {
 	@Belief
 	private int wind_orientation;
 	@Belief
-	private Set<Fire> fire_location;
+	private ISpaceObject[] fire_location;
 	@Belief
 	private Set<?> fire_intensity; // modificar o tipo
 	@Belief
@@ -69,8 +71,35 @@ public class CommanderBDI {
 	private Set<Soldier> busy_soldiers;
 	@Belief
 	private double my_vision = 1; // não tenho a certeza do valor mas deduzo que 1 seja visão total
+	@Belief
+	private IVector2 combat_position;
 	
 	// um objectivo deste agente é procurar por um incêncio (apenas pela modificação do ambiente)
+	
+	/**
+	 *  Execute the functional body of the agent.
+	 *  Is only called once.
+	 */
+	@AgentBody
+	public void executeBody() {
+		agent.adoptPlan(new FindFirePlan()).get();
+		
+		final String msg = combat_position.getXAsDouble() + "-" + combat_position.getYAsDouble();
+		
+		System.out.println("mensagem: " + msg);
+		
+		IFuture<Collection<IChatService>>	chatservices	= agent.getServiceContainer().getRequiredServices("chatservices");
+		chatservices.addResultListener(new DefaultResultListener<Collection<IChatService>>()
+		{
+			public void resultAvailable(Collection<IChatService> result)
+			{
+				for(Iterator<IChatService> it=result.iterator(); it.hasNext(); ) {
+					IChatService cs = it.next();
+					cs.message(agent.getComponentIdentifier().getLocalName(), msg);
+				}
+			}
+		});
+	}
 	
 	public Grid2D getSpace() {
 		return space;
@@ -78,6 +107,14 @@ public class CommanderBDI {
 	
 	public ISpaceObject getMyself() {
 		return myself;
+	}
+	
+	public IVector2 getCombatPosition(){
+		return combat_position;
+	}
+	
+	public void setCombatPosition(IVector2 combat_position){
+		this.combat_position = combat_position;
 	}
 	
 	public int getWindSpeed() {
@@ -96,11 +133,11 @@ public class CommanderBDI {
 		this.wind_orientation = wind_orientation;
 	}
 	
-	public Set<Fire> getFireLocation() {
+	public ISpaceObject[] getFireLocation() {
 		return fire_location;
 	}
 	
-	public void setFireLocation(Set<Fire> fire) {
+	public void setFireLocation(ISpaceObject[] fire) {
 		this.fire_location = fire;
 	}
 	
@@ -134,24 +171,5 @@ public class CommanderBDI {
 	
 	public void setBusySoldiers(Set<Soldier> busy_soldiers) {
 		this.busy_soldiers = busy_soldiers;
-	}
-	
-	/**
-	 *  Execute the functional body of the agent.
-	 *  Is only called once.
-	 */
-	@AgentBody
-	public void executeBody() {
-		IFuture<Collection<IChatService>>	chatservices	= agent.getServiceContainer().getRequiredServices("chatservices");
-		chatservices.addResultListener(new DefaultResultListener<Collection<IChatService>>()
-		{
-			public void resultAvailable(Collection<IChatService> result)
-			{
-				for(Iterator<IChatService> it=result.iterator(); it.hasNext(); ) {
-					IChatService cs = it.next();
-					cs.message(agent.getComponentIdentifier().getLocalName(), "Hello");
-				}
-			}
-		});
 	}
 }

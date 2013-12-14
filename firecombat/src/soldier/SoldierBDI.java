@@ -71,8 +71,8 @@ public class SoldierBDI {
 	@AgentBody
 	public void body(){		
 		agent_number++;
-		System.out.println("Agente Soldier Numero " + agent_number);
-		System.out.println("Good bye!");
+		System.out.println("I'm soldier no. " + agent_number);
+//		System.out.println("Good bye!");
 		
 		//CHAT
 //		IFuture<Collection<IChatService>>	chatservices	= agent.getServiceContainer().getRequiredServices("chatservices");

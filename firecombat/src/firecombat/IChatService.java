@@ -1,5 +1,7 @@
 package firecombat;
 
+import jadex.extension.envsupport.math.IVector2;
+
 
 public interface IChatService{
 	
