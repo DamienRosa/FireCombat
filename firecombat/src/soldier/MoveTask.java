@@ -4,8 +4,10 @@ import jadex.bridge.service.types.clock.IClockService;
 import jadex.extension.envsupport.environment.AbstractTask;
 import jadex.extension.envsupport.environment.IEnvironmentSpace;
 import jadex.extension.envsupport.environment.ISpaceObject;
+import jadex.extension.envsupport.environment.space2d.Grid2D;
 import jadex.extension.envsupport.environment.space2d.Space2D;
 import jadex.extension.envsupport.math.IVector2;
+import jadex.extension.envsupport.math.Vector2Double;
 
 public class MoveTask extends AbstractTask {
 	
@@ -17,6 +19,9 @@ public class MoveTask extends AbstractTask {
 	
 	/** The speed property. */
 	public static final String	PROPERTY_SPEED = "speed";
+	
+	/** The fire property. */
+	public static final String	PROPERTY_FIRE = "fire";
 		
 	//-------- IObjectTask methods --------
 	
@@ -35,8 +40,26 @@ public class MoveTask extends AbstractTask {
 		double	distance	= ((Space2D)space).getDistance(location, destination).getAsDouble();
 		double	maxdist	= progress*speed*0.001;
 		IVector2	newloc	= distance<=maxdist ? destination : direction.multiply(maxdist).add(location);
-		((Space2D)space).setPosition(obj.getId(), newloc);		
-		if(newloc==destination)
+		((Space2D)space).setPosition(obj.getId(), newloc);	
+		if (isNear((Grid2D) space, newloc))
 			setFinished(space, obj, true);
+//		if(newloc==destination)
+//			setFinished(space, obj, true);
+	}
+	
+	public boolean isNear(Grid2D space, IVector2 pos) {
+		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()), PROPERTY_FIRE) != null ||
+			space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()), PROPERTY_FIRE) != null ||
+			space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble(), pos.getYAsDouble()+1), PROPERTY_FIRE) != null ||
+			space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble(), pos.getYAsDouble()-1), PROPERTY_FIRE) != null ||
+			space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()-1), PROPERTY_FIRE) != null ||
+			space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()+1), PROPERTY_FIRE) != null ||
+			space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()+1), PROPERTY_FIRE) != null ||
+			space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()-1), PROPERTY_FIRE) != null)
+		{
+			return true;
+		}
+		
+		return false;
 	}
 }

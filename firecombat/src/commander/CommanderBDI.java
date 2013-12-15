@@ -79,9 +79,12 @@ public class CommanderBDI {
 	/**
 	 *  Execute the functional body of the agent.
 	 *  Is only called once.
+	 * @throws InterruptedException 
 	 */
 	@AgentBody
-	public void executeBody() {
+	public void executeBody() throws InterruptedException {
+//		Thread.sleep(5000);
+		
 		agent.adoptPlan(new FindFirePlan()).get();
 		
 		final String msg = combat_position.getXAsDouble() + "-" + combat_position.getYAsDouble();

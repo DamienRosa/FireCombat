@@ -55,8 +55,6 @@ public class SoldierBDI {
 	protected Grid2D space = (Grid2D)agent.getParentAccess().getExtension("myfc2dspace").get();
 	@Belief
 	protected ISpaceObject myself = space.getAvatar(agent.getComponentDescription(), agent.getModel().getFullName());
-//	@Belief
-//	protected Location my_location;
 	@Belief
 	protected double fire_distance;
 	@Belief
@@ -69,23 +67,10 @@ public class SoldierBDI {
 	private Set<?> vegetation_state;
 	
 	@AgentBody
-	public void body(){		
+	public void body() throws InterruptedException{	
+//		Thread.sleep(5005);
 		agent_number++;
 		System.out.println("I'm soldier no. " + agent_number);
-//		System.out.println("Good bye!");
-		
-		//CHAT
-//		IFuture<Collection<IChatService>>	chatservices	= agent.getServiceContainer().getRequiredServices("chatservices");
-//		chatservices.addResultListener(new DefaultResultListener<Collection<IChatService>>()
-//		{
-//			public void resultAvailable(Collection<IChatService> result)
-//			{
-//				for(Iterator<IChatService> it=result.iterator(); it.hasNext(); ) {
-//					IChatService cs = it.next();
-//					cs.message(agent.getComponentIdentifier().getLocalName(), "Hello");
-//				}
-//			}
-//		});
 	}
 	
 	public Grid2D getSpace() {
@@ -114,10 +99,6 @@ public class SoldierBDI {
 		return fire_intensity;
 	}
 	
-//	public Location getMyLocation() {
-//		return my_location;
-//	}
-	
 	public Set<?> getVegetationState() {
 		return vegetation_state;
 	}
@@ -137,10 +118,6 @@ public class SoldierBDI {
 	public void setFireIntensity(Set<?> fire_intensity) {
 		this.fire_intensity = fire_intensity;
 	}
-	
-//	public void setMyLocation(Location my_location) {
-//		this.my_location = my_location;
-//	}
 	
 	public void setVegetationState(Set<?> vegetation_state) {
 		this.vegetation_state = vegetation_state;

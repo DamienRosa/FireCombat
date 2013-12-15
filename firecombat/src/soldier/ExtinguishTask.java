@@ -21,7 +21,7 @@ public class ExtinguishTask extends AbstractTask {
 	public static final String	PROPERTY_POSITION = "position";
 	
 	/** The extinct property. */
-	public static final String	PROPERTY_EXTINCT = "extinct";
+	public static final String	PROPERTY_INTENSITY = "intensity";
 	
 	
 	//-------- IObjectTask methods --------
@@ -41,22 +41,13 @@ public class ExtinguishTask extends AbstractTask {
 		ArrayList<ISpaceObject> flames = fire.getNeighbors(combat_position, (Grid2D) space);
 		
 		for (int i = 0; i < flames.size(); i++) {
-			flames.get(i).setProperty(PROPERTY_EXTINCT, true);
+			System.out.println("I got here!");
+			flames.get(i).setProperty(PROPERTY_INTENSITY, new Integer(0));
+//			space.destroySpaceObject(flames.get(i).getId());
 		}
 		
 		setFinished(space, obj, true);
 		
-		
-		// Check if brigade object is in range of fire.
-//		Space2D	space2d	= (Space2D)space;
-//		ISpaceObject	disaster	= (ISpaceObject)getProperty(PROPERTY_DISASTER);
-//		double	range	= ((Number)disaster.getProperty("size")).intValue()/2 * 0.005;	// 0.005 = scale of drawsize in application.xml
-//		if(space2d.getDistance((IVector2)obj.getProperty(Space2D.PROPERTY_POSITION),
-//			(IVector2)disaster.getProperty(Space2D.PROPERTY_POSITION)).getAsDouble()>range*1.1) // allow for 10% rounding error
-//		{
-//			throw new RuntimeException("Fire out of range: "+obj);
-//		}
-
 		// Update disaster object based on time progress.
 //		int	cnt	= 0;
 //		double	extinguished	= ((Number)obj.getProperty(PROPERTY_EXTINGUISHED)).doubleValue();

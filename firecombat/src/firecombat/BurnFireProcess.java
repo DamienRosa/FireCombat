@@ -52,7 +52,7 @@ public class BurnFireProcess extends SimplePropertyObject implements
 		int sizey = space.getAreaSize().getYAsInteger();
 
 		if (lasttick + 2 < arg0.getTick()) {
-			lasttick += 5;
+			lasttick += 100;
 
 			for (ISpaceObject flame : fire) {
 				if(!(boolean) flame.getProperty("extinct")){
