@@ -2,8 +2,6 @@ package soldier;
 
 import java.util.ArrayList;
 
-import world.Fire;
-
 import jadex.bridge.service.types.clock.IClockService;
 import jadex.extension.envsupport.environment.AbstractTask;
 import jadex.extension.envsupport.environment.IEnvironmentSpace;
@@ -11,6 +9,7 @@ import jadex.extension.envsupport.environment.ISpaceObject;
 import jadex.extension.envsupport.environment.space2d.Grid2D;
 import jadex.extension.envsupport.environment.space2d.Space2D;
 import jadex.extension.envsupport.math.IVector2;
+import jadex.extension.envsupport.math.Vector2Double;
 
 public class ExtinguishTask extends AbstractTask {
 	
@@ -22,6 +21,11 @@ public class ExtinguishTask extends AbstractTask {
 	
 	/** The extinct property. */
 	public static final String	PROPERTY_INTENSITY = "intensity";
+	
+	/** The extinct property. */
+	public static final String	PROPERTY_FIRE = "fire";
+	
+	ArrayList<ISpaceObject> temp;
 	
 	
 	//-------- IObjectTask methods --------
@@ -37,47 +41,38 @@ public class ExtinguishTask extends AbstractTask {
 		IVector2 combat_position = (IVector2)getProperty(PROPERTY_POSITION);
 //		IVector2 combat_position = (IVector2)obj.getProperty(PROPERTY_POSITION); acho que pode ser assim também (testar)
 		
-		Fire fire = new Fire();
-		ArrayList<ISpaceObject> flames = fire.getNeighbors(combat_position, (Grid2D) space);
+		ArrayList<ISpaceObject> flames = getNeighbors((Grid2D) space, combat_position);
 		
 		for (int i = 0; i < flames.size(); i++) {
-			System.out.println("I got here!");
-			flames.get(i).setProperty(PROPERTY_INTENSITY, new Integer(0));
-//			space.destroySpaceObject(flames.get(i).getId());
+			System.out.println("I got here! " + flames.size());
+//			flames.get(i).setProperty(PROPERTY_INTENSITY, new Integer(0));
+			space.destroySpaceObject(flames.get(i).getId());
 		}
 		
 		setFinished(space, obj, true);
+	}
+	
+	public ArrayList<ISpaceObject> getNeighbors(Grid2D space, IVector2 pos) {
 		
-		// Update disaster object based on time progress.
-//		int	cnt	= 0;
-//		double	extinguished	= ((Number)obj.getProperty(PROPERTY_EXTINGUISHED)).doubleValue();
-//		extinguished	+= progress*0.0002;	// 1 fire per 5 seconds.
-//		while(extinguished>1)
-//		{
-//			cnt++;
-//			extinguished	-= 1;
-//		}
-//		int fire	= ((Number)disaster.getProperty("fire")).intValue();
-//		fire	= Math.max(fire-cnt, 0);
-//		disaster.setProperty("fire", new Integer(fire));
+		 temp = new ArrayList<ISpaceObject>();
 		
-		// Remove disaster object when everything is now fine.
-//		if(fire==0 && ((Number)disaster.getProperty("chemicals")).intValue()==0 && ((Number)disaster.getProperty("victims")).intValue()==0)
-//		{
-//			if(space2d.getSpaceObject0(disaster.getId())!=null)
-//				space.destroySpaceObject(disaster.getId());
-//		}
-
-		// If not finished but least one fire was extinguished
-		// use random to determine if need to move to another position for next fire.
-//		if(fire==0 || cnt>0 && Math.random()>0.5)
-//		{
-//			obj.setProperty(PROPERTY_EXTINGUISHED, new Double(0));
-//			setFinished(space, obj, true);
-//		}
-//		else
-//		{
-//			obj.setProperty(PROPERTY_EXTINGUISHED, new Double(extinguished));			
-//		}
+//		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()), PROPERTY_FIRE) != null)
+			temp.add((ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()), PROPERTY_FIRE));
+//		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()), PROPERTY_FIRE) != null)
+			temp.add((ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()), PROPERTY_FIRE));
+//		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble(), pos.getYAsDouble()+1), PROPERTY_FIRE) != null)
+			temp.add((ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble(), pos.getYAsDouble()+1), PROPERTY_FIRE));
+//		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble(), pos.getYAsDouble()-1), PROPERTY_FIRE) != null)
+			temp.add((ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble(), pos.getYAsDouble()-1), PROPERTY_FIRE));
+//		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()-1), PROPERTY_FIRE) != null)
+			temp.add((ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()-1), PROPERTY_FIRE));
+//		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()+1), PROPERTY_FIRE) != null)
+			temp.add((ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()+1), PROPERTY_FIRE));
+//		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()+1), PROPERTY_FIRE) != null)
+			temp.add((ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()+1), PROPERTY_FIRE));
+//		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()-1), PROPERTY_FIRE) != null)
+			temp.add((ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()-1), PROPERTY_FIRE));
+		
+		return temp;
 	}
 }

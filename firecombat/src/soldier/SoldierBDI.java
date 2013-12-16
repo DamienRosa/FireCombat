@@ -29,7 +29,6 @@ import jadex.micro.annotation.ProvidedService;
 import jadex.micro.annotation.ProvidedServices;
 import jadex.micro.annotation.RequiredService;
 import jadex.micro.annotation.RequiredServices;
-import world.Location;
 
 @Agent
 @Plans(
@@ -37,7 +36,6 @@ import world.Location;
 //	@Plan(trigger=@Trigger(goals=MaintainSelfSecurity.class), body=@Body(SelfSecurityPlan.class)),
 	@Plan(trigger=@Trigger(goals=AchieveExtinguishFire.class), body=@Body(ExtinguishFirePlan.class)),
 	@Plan(trigger=@Trigger(goals=AchieveMoveToLocation.class), body=@Body(MoveToLocationPlan.class)),
-	@Plan(body=@Body(WaitForOrderPlan.class))
 })
 @ProvidedServices(@ProvidedService(type=IChatService.class, implementation=@Implementation(ChatService.class)))
 @RequiredServices(

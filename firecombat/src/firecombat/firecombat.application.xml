@@ -40,7 +40,6 @@
 					<env:property name="position" event="true"/>
 					<env:property name="intensity" class="Integer" dynamic="true"/>
 					<env:property name="extinct" class="boolean"/>
-					<env:property name="size" class="Integer"></env:property>
 				</env:objecttype>
 				<env:objecttype name="forest">
 				    <env:property name="position" class="IVector2" event="true"/>

@@ -35,20 +35,13 @@ public class ChatService implements IChatService {
 	*  @param text The message text.
 	*/
 	
-	public void message(final String sender, final String msg) {
-//		System.out.println(sender_agent.getComponentIdentifier().getName());
-//		System.out.println(agent.getComponentIdentifier().getLocalName());
-
-//		System.out.println(agent.getComponentIdentifier().getLocalName()+" received at "
-//			+format.format(new Date(clock.getTime()))+" from: "+sender+" message: "+text);
-		
+	public void message(final String sender, final String msg) {		
 		if (agent.getComponentIdentifier().getLocalName().equals("Soldier"))
 		{
 			System.out.println(sender+" send a message");
 			System.out.println("Agent "+agent.getComponentIdentifier().getLocalName()+" received the message");
 			
 			Vector2Double destination = new Vector2Double(Double.parseDouble(msg.split("-")[0]), Double.parseDouble(msg.split("-")[1]));
-//			agent.dispatchTopLevelGoal(new AchieveMoveToLocation(new Vector2Double(20.0, 20.0))).get();
 			agent.dispatchTopLevelGoal(new AchieveExtinguishFire(destination)).get();
 		}
 	}

@@ -30,8 +30,6 @@ import soldier.AchieveMoveToLocation;
 import soldier.MoveToLocationPlan;
 import soldier.WaitForOrderPlan;
 
-import world.Fire;
-import world.Soldier;
 import firecombat.ChatService;
 import firecombat.IChatService;
 
@@ -66,10 +64,6 @@ public class CommanderBDI {
 	@Belief
 	private Set<Integer> vegetation_state;
 	@Belief
-	private Set<Soldier> all_soldiers;
-	@Belief
-	private Set<Soldier> busy_soldiers;
-	@Belief
 	private double my_vision = 1; // não tenho a certeza do valor mas deduzo que 1 seja visão total
 	@Belief
 	private IVector2 combat_position;
@@ -88,8 +82,6 @@ public class CommanderBDI {
 		agent.adoptPlan(new FindFirePlan()).get();
 		
 		final String msg = combat_position.getXAsDouble() + "-" + combat_position.getYAsDouble();
-		
-		System.out.println("mensagem: " + msg);
 		
 		IFuture<Collection<IChatService>>	chatservices	= agent.getServiceContainer().getRequiredServices("chatservices");
 		chatservices.addResultListener(new DefaultResultListener<Collection<IChatService>>()
@@ -158,21 +150,5 @@ public class CommanderBDI {
 	
 	public void setVegetationState(Set<Integer> vegetation_state) {
 		this.vegetation_state = vegetation_state;
-	}
-	
-	public Set<Soldier> getAllSoldiers() {
-		return all_soldiers;
-	}
-	
-	public void setAllSoldiers(Set<Soldier> all_soldiers) {
-		this.all_soldiers = all_soldiers;
-	}
-	
-	public Set<Soldier> getBusySoldiers() {
-		return busy_soldiers;
-	}
-	
-	public void setBusySoldiers(Set<Soldier> busy_soldiers) {
-		this.busy_soldiers = busy_soldiers;
 	}
 }

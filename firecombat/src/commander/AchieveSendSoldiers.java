@@ -38,8 +38,6 @@ import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
-import world.Soldier;
-
 //caso queira inibir algum goal
 //@Goal(unique=true, deliberation=@Deliberation(inhibits={PerformLookForWaste.class, AchieveCleanup.class})
 @Goal(unique=true)
