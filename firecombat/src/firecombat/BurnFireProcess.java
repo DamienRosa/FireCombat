@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 import jadex.bridge.service.types.clock.IClockService;
 import jadex.commons.SimplePropertyObject;
@@ -13,10 +12,8 @@ import jadex.extension.envsupport.environment.ISpaceObject;
 import jadex.extension.envsupport.environment.ISpaceProcess;
 import jadex.extension.envsupport.environment.space2d.Grid2D;
 import jadex.extension.envsupport.math.IVector2;
-import jadex.extension.envsupport.math.Vector1Int;
 import jadex.extension.envsupport.math.Vector2Double;
 import jadex.extension.envsupport.math.Vector2Int;
-import java.util.Iterator;
 
 public class BurnFireProcess extends SimplePropertyObject implements
 		ISpaceProcess {
@@ -42,6 +39,7 @@ public class BurnFireProcess extends SimplePropertyObject implements
 		 return temp;
 	 }
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void execute(IClockService arg0, IEnvironmentSpace arg1) {
 		Grid2D space = (Grid2D) arg1;
@@ -49,10 +47,11 @@ public class BurnFireProcess extends SimplePropertyObject implements
 		ISpaceObject[] fire = space.getSpaceObjectsByType("fire");
 		
 		int sizex = space.getAreaSize().getXAsInteger();
+		@SuppressWarnings("unused")
 		int sizey = space.getAreaSize().getYAsInteger();
 
 		if (lasttick + 2 < arg0.getTick()) {
-			lasttick += 100;
+			lasttick += 20;
 
 			for (ISpaceObject flame : fire) {
 				if(!(boolean) flame.getProperty("extinct")){
@@ -79,6 +78,7 @@ public class BurnFireProcess extends SimplePropertyObject implements
 			ISpaceObject[] forest = space.getSpaceObjectsByType("forest");
 			
 			for (ISpaceObject tree : forest) {
+				@SuppressWarnings("unused")
 				Vector2Double pos = (Vector2Double) tree.getProperty("position");
 				if (tree.getProperty("probability").equals(0.6)) {
 					
@@ -99,6 +99,7 @@ public class BurnFireProcess extends SimplePropertyObject implements
 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void start(IClockService arg0, IEnvironmentSpace arg1) {
 

@@ -2,10 +2,8 @@ package firecombat;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import soldier.AchieveExtinguishFire;
-import soldier.AchieveMoveToLocation;
 
 
 import jadex.bdiv3.BDIAgent;
@@ -16,7 +14,6 @@ import jadex.bridge.service.types.clock.IClockService;
 import jadex.commons.future.DelegationResultListener;
 import jadex.commons.future.Future;
 import jadex.commons.future.IFuture;
-import jadex.extension.envsupport.math.IVector2;
 import jadex.extension.envsupport.math.Vector2Double;
 
 

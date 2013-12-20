@@ -9,7 +9,6 @@ import jadex.commons.SimplePropertyObject;
 import jadex.extension.envsupport.environment.IEnvironmentSpace;
 import jadex.extension.envsupport.environment.ISpaceProcess;
 import jadex.extension.envsupport.environment.space2d.Space2D;
-import jadex.extension.envsupport.math.Vector2Double;
 import jadex.extension.envsupport.math.Vector2Int;
 
 public class ForestBgProcess  extends SimplePropertyObject implements ISpaceProcess{
@@ -26,6 +25,7 @@ public class ForestBgProcess  extends SimplePropertyObject implements ISpaceProc
 		
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void start(IClockService arg0, IEnvironmentSpace arg1) {
 		Space2D space = (Space2D)arg1;

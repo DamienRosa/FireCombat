@@ -49,8 +49,6 @@ public class MoveToLocationPlan {
 		properties.put(AbstractTask.PROPERTY_CONDITION, new PlanFinishedTaskCondition(plan));
 		IEnvironmentSpace space = agent.getSpace();
 		
-		System.out.println("I get here!");
-		
 		Future<Void> future = new Future<Void>();
 		DelegationResultListener<Void> listener = new DelegationResultListener<Void>(future, true);
 		Object mtaskid = space.createObjectTask(MoveTask.PROPERTY_TYPENAME, properties, myself.getId());

@@ -7,7 +7,6 @@ import jadex.extension.envsupport.environment.AbstractTask;
 import jadex.extension.envsupport.environment.IEnvironmentSpace;
 import jadex.extension.envsupport.environment.ISpaceObject;
 import jadex.extension.envsupport.environment.space2d.Grid2D;
-import jadex.extension.envsupport.environment.space2d.Space2D;
 import jadex.extension.envsupport.math.IVector2;
 import jadex.extension.envsupport.math.Vector2Double;
 
@@ -44,9 +43,9 @@ public class ExtinguishTask extends AbstractTask {
 		ArrayList<ISpaceObject> flames = getNeighbors((Grid2D) space, combat_position);
 		
 		for (int i = 0; i < flames.size(); i++) {
-			System.out.println("I got here! " + flames.size());
-//			flames.get(i).setProperty(PROPERTY_INTENSITY, new Integer(0));
-			space.destroySpaceObject(flames.get(i).getId());
+			System.out.println("I got here! ");
+			flames.get(i).setProperty(PROPERTY_INTENSITY, new Integer(0));
+			space.destroySpaceObject(flames.get(i));
 		}
 		
 		setFinished(space, obj, true);
@@ -56,22 +55,38 @@ public class ExtinguishTask extends AbstractTask {
 		
 		 temp = new ArrayList<ISpaceObject>();
 		
-//		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()), PROPERTY_FIRE) != null)
-			temp.add((ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()), PROPERTY_FIRE));
-//		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()), PROPERTY_FIRE) != null)
-			temp.add((ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()), PROPERTY_FIRE));
-//		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble(), pos.getYAsDouble()+1), PROPERTY_FIRE) != null)
-			temp.add((ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble(), pos.getYAsDouble()+1), PROPERTY_FIRE));
-//		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble(), pos.getYAsDouble()-1), PROPERTY_FIRE) != null)
-			temp.add((ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble(), pos.getYAsDouble()-1), PROPERTY_FIRE));
-//		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()-1), PROPERTY_FIRE) != null)
-			temp.add((ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()-1), PROPERTY_FIRE));
-//		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()+1), PROPERTY_FIRE) != null)
-			temp.add((ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()+1), PROPERTY_FIRE));
-//		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()+1), PROPERTY_FIRE) != null)
-			temp.add((ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()+1), PROPERTY_FIRE));
-//		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()-1), PROPERTY_FIRE) != null)
-			temp.add((ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()-1), PROPERTY_FIRE));
+		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()), PROPERTY_FIRE) != null){
+			ISpaceObject obj = (ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()), PROPERTY_FIRE);
+			temp.add((ISpaceObject) obj.getId());
+		}
+		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()), PROPERTY_FIRE) != null){
+			ISpaceObject obj = (ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()), PROPERTY_FIRE);
+			temp.add((ISpaceObject) obj.getId());
+		}
+		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble(), pos.getYAsDouble()+1), PROPERTY_FIRE) != null){
+			ISpaceObject obj = (ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble(), pos.getYAsDouble()+1), PROPERTY_FIRE);
+			temp.add((ISpaceObject) obj.getId());
+		}
+		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble(), pos.getYAsDouble()-1), PROPERTY_FIRE) != null){
+			ISpaceObject obj = (ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble(), pos.getYAsDouble()-1), PROPERTY_FIRE);
+			temp.add((ISpaceObject) obj.getId());
+		}
+		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()-1), PROPERTY_FIRE) != null){
+			ISpaceObject obj = (ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()-1), PROPERTY_FIRE);
+			temp.add((ISpaceObject) obj.getId());
+		}
+		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()+1), PROPERTY_FIRE) != null){
+			ISpaceObject obj = (ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()+1), PROPERTY_FIRE);
+			temp.add((ISpaceObject) obj.getId());
+		}
+		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()+1), PROPERTY_FIRE) != null){
+			ISpaceObject obj = (ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()+1, pos.getYAsDouble()+1), PROPERTY_FIRE);
+			temp.add((ISpaceObject) obj.getId());
+		}
+		if (space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()-1), PROPERTY_FIRE) != null){
+			ISpaceObject obj = (ISpaceObject) space.getSpaceObjectsByGridPosition(new Vector2Double(pos.getXAsDouble()-1, pos.getYAsDouble()-1), PROPERTY_FIRE);
+			temp.add((ISpaceObject) obj.getId());
+		}
 		
 		return temp;
 	}

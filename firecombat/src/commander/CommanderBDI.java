@@ -7,28 +7,19 @@ import jadex.bdiv3.annotation.Plan;
 import jadex.bdiv3.annotation.Plans;
 import jadex.bdiv3.annotation.Trigger;
 import jadex.bridge.service.types.clock.IClockService;
-import jadex.commons.future.DefaultResultListener;
-import jadex.commons.future.IFuture;
 import jadex.extension.envsupport.environment.ISpaceObject;
 import jadex.extension.envsupport.environment.space2d.Grid2D;
 import jadex.extension.envsupport.math.IVector2;
 import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.AgentBody;
 import jadex.micro.annotation.Binding;
-import jadex.micro.annotation.Description;
 import jadex.micro.annotation.Implementation;
 import jadex.micro.annotation.ProvidedService;
 import jadex.micro.annotation.ProvidedServices;
 import jadex.micro.annotation.RequiredService;
 import jadex.micro.annotation.RequiredServices;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.Set;
-
-import soldier.AchieveMoveToLocation;
-import soldier.MoveToLocationPlan;
-import soldier.WaitForOrderPlan;
 
 import firecombat.ChatService;
 import firecombat.IChatService;
@@ -36,7 +27,7 @@ import firecombat.IChatService;
 @Agent
 @Plans(
 {
-	@Plan(body=@Body(FindFirePlan.class)),
+	@Plan(trigger=@Trigger(factchangeds="time"), body=@Body(FindFirePlan.class)),
 	@Plan(trigger=@Trigger(goals=AchieveSendSoldiers.class), body=@Body(SendSoldiersPlan.class))
 })
 @ProvidedServices(@ProvidedService(type=IChatService.class, implementation=@Implementation(ChatService.class)))
@@ -67,41 +58,21 @@ public class CommanderBDI {
 	private double my_vision = 1; // não tenho a certeza do valor mas deduzo que 1 seja visão total
 	@Belief
 	private IVector2 combat_position;
+	@Belief(updaterate=1000)
+	protected long time = System.currentTimeMillis();
+
 	
-	// um objectivo deste agente é procurar por um incêncio (apenas pela modificação do ambiente)
-	
-	/**
-	 *  Execute the functional body of the agent.
-	 *  Is only called once.
-	 * @throws InterruptedException 
-	 */
 	@AgentBody
 	public void executeBody() throws InterruptedException {
-//		Thread.sleep(5000);
-		
 		agent.adoptPlan(new FindFirePlan()).get();
-		
-		final String msg = combat_position.getXAsDouble() + "-" + combat_position.getYAsDouble();
-		
-		IFuture<Collection<IChatService>>	chatservices	= agent.getServiceContainer().getRequiredServices("chatservices");
-		chatservices.addResultListener(new DefaultResultListener<Collection<IChatService>>()
-		{
-			public void resultAvailable(Collection<IChatService> result)
-			{
-				for(Iterator<IChatService> it=result.iterator(); it.hasNext(); ) {
-					IChatService cs = it.next();
-					cs.message(agent.getComponentIdentifier().getLocalName(), msg);
-				}
-			}
-		});
 	}
 	
 	public Grid2D getSpace() {
 		return space;
 	}
 	
-	public ISpaceObject getMyself() {
-		return myself;
+	public BDIAgent getMyself() {
+		return agent;
 	}
 	
 	public IVector2 getCombatPosition(){

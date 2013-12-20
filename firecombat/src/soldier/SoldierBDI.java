@@ -1,7 +1,5 @@
 package soldier;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.Set;
 
 import firecombat.ChatService;
@@ -14,13 +12,10 @@ import jadex.bdiv3.annotation.Plan;
 import jadex.bdiv3.annotation.Trigger;
 import jadex.bdiv3.annotation.Body;
 import jadex.bridge.service.types.clock.IClockService;
-import jadex.commons.future.DefaultResultListener;
-import jadex.commons.future.IFuture;
 import jadex.extension.envsupport.environment.ISpaceObject;
 import jadex.extension.envsupport.environment.space2d.Grid2D;
 import jadex.extension.envsupport.environment.space2d.Space2D;
 import jadex.extension.envsupport.math.IVector2;
-import jadex.extension.envsupport.math.Vector2Double;
 import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.AgentBody;
 import jadex.micro.annotation.Binding;
